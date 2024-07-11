@@ -12,7 +12,7 @@
 	};
 
 	const markerWidth = 24;
-	const cornerRadius = 4;
+	const cornerRadius = markerWidth / 6;
 	const firstVOffsetSign = Math.round(Math.random()) * 2 - 1;
 
 	let clPts: [number, number][] = [
@@ -142,24 +142,35 @@
 
 <div class="container">
 	<svg class="highlight" aria-hidden="true" {width} {height}>
+		<defs>
+			<linearGradient id="highlight-gradient">
+				<stop stop-color="limegreen" offset="0%" />
+				<stop stop-color="limegreen" stop-opacity="66%" offset={`${50 + noise(20) - 10}%`} />
+				<stop stop-color="limegreen" offset="100%" />
+			</linearGradient>
+		</defs>
 		<filter id="blur">
 			<feGaussianBlur stdDeviation="1" />
 		</filter>
-		<path d={clD} class="line line--center" />
-		<path d={topLineD} class="line line--top" />
-		<path d={bottomLineD} class="line line--bottom" />
-		<path d={fullPolygon} class="highlight-polygon" />
-		<path
-			d={splodgeD}
-			class="splodge"
-			transform={`translate(${fullPolygonPoints[0][0] - cornerRadius}, ${fullPolygonPoints[0][1]}) rotate(${(normalAngles[0] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)`}
-		/>
-		<path
-			d={splodgeD}
-			class="splodge"
-			transform={`translate(${fullPolygonPoints[4][0] - cornerRadius}, ${fullPolygonPoints[4][1]}) rotate(${(normalAngles[4] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)`}
-		/>
-		<!--     -->
+		<g class="debug">
+			<path d={clD} class="line line--center" />
+			<path d={topLineD} class="line line--top" />
+			<path d={bottomLineD} class="line line--bottom" />
+		</g>
+		<g class="highlight-group">
+			<path d={fullPolygon} class="highlight-polygon" />
+			<path
+				d={splodgeD}
+				class="splodge"
+				transform={`translate(${fullPolygonPoints[0][0] - cornerRadius}, ${fullPolygonPoints[0][1]}) rotate(${(normalAngles[0] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)`}
+			/>
+			<path
+				d={splodgeD}
+				class="splodge"
+				transform={`translate(${fullPolygonPoints[4][0] - cornerRadius}, ${fullPolygonPoints[4][1]}) rotate(${(normalAngles[4] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)`}
+			/>
+			<!--     -->
+		</g>
 	</svg>
 	<div class="slot-container">
 		<slot />
@@ -186,7 +197,10 @@
 		stroke-width: 2;
 		stroke-dasharray: 4 4;
 		fill: none;
-		opacity: 0;
+	}
+
+	g.debug {
+		display: none;
 	}
 
 	.line--center {
@@ -202,12 +216,16 @@
 	}
 
 	.highlight-polygon {
-		fill: yellowgreen;
+		fill: url(#highlight-gradient);
 		opacity: 0.5;
 	}
 
 	.splodge {
 		fill: yellowgreen;
 		opacity: 0.15;
+	}
+
+	g.highlight-group {
+		filter: url(#blur);
 	}
 </style>
