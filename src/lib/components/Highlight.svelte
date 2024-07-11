@@ -50,7 +50,7 @@
 		];
 	});
 
-	const bottomLinePts: [number, number][] = clPts.map((clPt, idx) => {
+	const botLinePts: [number, number][] = clPts.map((clPt, idx) => {
 		const normalAngle = normalAngles[idx];
 
 		return [
@@ -69,7 +69,7 @@
 
 	const clD = makeD(clPts);
 	const topLineD = makeD(topLinePts);
-	const bottomLineD = makeD(bottomLinePts);
+	const bottomLineD = makeD(botLinePts);
 
 	const roundingOffsets = [
 		[
@@ -90,31 +90,56 @@
 			] // end vertical
 		]
 	];
+
+	const fullPolygonPoints = [
+		[topLinePts[0][0] + roundingOffsets[0][0][0], topLinePts[0][1] + roundingOffsets[0][0][1]], // start
+
+		[topLinePts[1][0], topLinePts[1][1]], // top left Q control
+		[topLinePts[2][0], topLinePts[2][1]], // top centerpt
+		[topLinePts[3][0], topLinePts[3][1]], // top right Q control,
+		[topLinePts[4][0] - roundingOffsets[1][0][0], topLinePts[4][1] - roundingOffsets[1][0][1]], // top end
+
+		[topLinePts[4][0] + roundingOffsets[1][1][0], topLinePts[4][1] + roundingOffsets[1][1][1]], // top right A end
+		[botLinePts[4][0] - roundingOffsets[1][1][0], botLinePts[4][1] - roundingOffsets[1][1][1]], // right L end
+		[botLinePts[4][0] - roundingOffsets[1][0][0], botLinePts[4][1] - roundingOffsets[1][0][1]], // bot right A end
+
+		[botLinePts[3][0], botLinePts[3][1]], // bot left Q control
+		[botLinePts[2][0], botLinePts[2][1]], // bot centerpt
+		[botLinePts[1][0], botLinePts[1][1]], // bot right Q control
+		[botLinePts[0][0] + roundingOffsets[0][0][0], botLinePts[0][1] + roundingOffsets[0][0][1]], // bot start
+
+		[botLinePts[0][0] - roundingOffsets[0][1][0], botLinePts[0][1] - roundingOffsets[0][1][1]], // bot left A end
+		[topLinePts[0][0] + roundingOffsets[0][1][0], topLinePts[0][1] + roundingOffsets[0][1][1]], // left L end
+		[topLinePts[0][0] + roundingOffsets[0][0][0], topLinePts[0][1] + roundingOffsets[0][0][1]] // top left A end
+	];
 	const fullPolygon = [
-		`M${topLinePts[0][0] + roundingOffsets[0][0][0]} ${topLinePts[0][1] + +roundingOffsets[0][0][1]}`,
+		`M${fullPolygonPoints[0][0]} ${fullPolygonPoints[0][1]}`,
 
-		`Q${topLinePts[1][0]} ${topLinePts[1][1]}, ${topLinePts[2][0]} ${topLinePts[2][1]}`,
-		`Q${topLinePts[3][0]} ${topLinePts[3][1]}, ${topLinePts[4][0] - roundingOffsets[1][0][0]} ${topLinePts[4][1] - roundingOffsets[1][0][1]}`,
+		`Q${fullPolygonPoints[1][0]} ${fullPolygonPoints[1][1]}, ${fullPolygonPoints[2][0]} ${fullPolygonPoints[2][1]}`,
+		`Q${fullPolygonPoints[3][0]} ${fullPolygonPoints[3][1]}, ${fullPolygonPoints[4][0]} ${fullPolygonPoints[4][1]}`,
 
-		`A${cornerRadius} ${cornerRadius} 0 0 1 ${topLinePts[4][0] + roundingOffsets[1][1][0]} ${topLinePts[4][1] + roundingOffsets[1][1][1]}`,
-		`L${bottomLinePts[4][0] - roundingOffsets[1][1][0]} ${bottomLinePts[4][1] - roundingOffsets[1][1][1]}`,
-		`A${cornerRadius} ${cornerRadius} 0 0 1 ${bottomLinePts[4][0] - roundingOffsets[1][0][0]} ${bottomLinePts[4][1] - roundingOffsets[1][0][1]}`,
+		`A${cornerRadius} ${cornerRadius} 0 0 1 ${fullPolygonPoints[5][0]} ${fullPolygonPoints[5][1]}`,
+		`L${fullPolygonPoints[6][0]} ${fullPolygonPoints[6][1]}`,
+		`A${cornerRadius} ${cornerRadius} 0 0 1 ${fullPolygonPoints[7][0]} ${fullPolygonPoints[7][1]}`,
 
-		`Q${bottomLinePts[3][0]} ${bottomLinePts[3][1]}, ${bottomLinePts[2][0]} ${bottomLinePts[2][1]}`,
-		`Q${bottomLinePts[1][0]} ${bottomLinePts[1][1]}, ${bottomLinePts[0][0] + roundingOffsets[0][0][0]} ${bottomLinePts[0][1] + roundingOffsets[0][0][1]}`,
+		`Q${fullPolygonPoints[8][0]} ${fullPolygonPoints[8][1]}, ${fullPolygonPoints[9][0]} ${fullPolygonPoints[9][1]}`,
+		`Q${fullPolygonPoints[10][0]} ${fullPolygonPoints[10][1]}, ${fullPolygonPoints[11][0]} ${fullPolygonPoints[11][1]}`,
 
-		`A${cornerRadius} ${cornerRadius} 0 0 1 ${bottomLinePts[0][0] - roundingOffsets[0][1][0]} ${bottomLinePts[0][1] - roundingOffsets[0][1][1]}`,
-		`L${topLinePts[0][0] + roundingOffsets[0][1][0]} ${topLinePts[0][1] + roundingOffsets[0][1][1]}`,
-		`A${cornerRadius} ${cornerRadius} 0 0 1 ${topLinePts[0][0] + roundingOffsets[0][0][0]} ${topLinePts[0][1] + +roundingOffsets[0][0][1]}`
+		`A${cornerRadius} ${cornerRadius} 0 0 1 ${fullPolygonPoints[12][0]} ${fullPolygonPoints[12][1]}`,
+		`L${fullPolygonPoints[13][0]} ${fullPolygonPoints[13][1]}`,
+		`A${cornerRadius} ${cornerRadius} 0 0 1 ${fullPolygonPoints[14][0]} ${fullPolygonPoints[14][1]}`
 	].join(' ');
 </script>
 
 <div class="container">
 	<svg class="highlight" aria-hidden="true" {width} {height}>
+		<filter id="blur">
+			<feGaussianBlur stdDeviation="1" />
+		</filter>
 		<path d={clD} class="line line--center" />
 		<path d={topLineD} class="line line--top" />
 		<path d={bottomLineD} class="line line--bottom" />
-		<path d={fullPolygon} class="highlight-polygon" />
+		<path d={fullPolygon} class="highlight-polygon" filter="url(#blur)" />
 	</svg>
 	<div class="slot-container">
 		<slot />
@@ -141,7 +166,7 @@
 		stroke-width: 2;
 		stroke-dasharray: 4 4;
 		fill: none;
-		opacity: 0.1;
+		opacity: 0;
 	}
 
 	.line--center {
