@@ -129,6 +129,15 @@
 		`L${fullPolygonPoints[13][0]} ${fullPolygonPoints[13][1]}`,
 		`A${cornerRadius} ${cornerRadius} 0 0 1 ${fullPolygonPoints[14][0]} ${fullPolygonPoints[14][1]}`
 	].join(' ');
+
+	const nrOfPoints = fullPolygonPoints.length;
+	const splodgeD = [
+		`M0 ${cornerRadius}`,
+		`A${cornerRadius} ${cornerRadius} 0 0 1 ${2 * cornerRadius} ${cornerRadius}`,
+		`V${2 * markerWidth - cornerRadius}`,
+		`A${cornerRadius} ${cornerRadius} 0 0 1 0 ${2 * markerWidth - cornerRadius}`,
+		'Z'
+	].join(' ');
 </script>
 
 <div class="container">
@@ -139,7 +148,18 @@
 		<path d={clD} class="line line--center" />
 		<path d={topLineD} class="line line--top" />
 		<path d={bottomLineD} class="line line--bottom" />
-		<path d={fullPolygon} class="highlight-polygon" filter="url(#blur)" />
+		<path d={fullPolygon} class="highlight-polygon" />
+		<path
+			d={splodgeD}
+			class="splodge"
+			transform={`translate(${fullPolygonPoints[0][0] - cornerRadius}, ${fullPolygonPoints[0][1]}) rotate(${(normalAngles[0] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)`}
+		/>
+		<path
+			d={splodgeD}
+			class="splodge"
+			transform={`translate(${fullPolygonPoints[4][0] - cornerRadius}, ${fullPolygonPoints[4][1]}) rotate(${(normalAngles[4] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)`}
+		/>
+		<!--     -->
 	</svg>
 	<div class="slot-container">
 		<slot />
@@ -184,5 +204,10 @@
 	.highlight-polygon {
 		fill: yellowgreen;
 		opacity: 0.5;
+	}
+
+	.splodge {
+		fill: yellowgreen;
+		opacity: 0.15;
 	}
 </style>
