@@ -4,8 +4,8 @@
 
 <main>
 	<div class="center">
-		<Highlight>
-			<p>Kiskutya</p>
+		<Highlight color="hotpink">
+			<!-- <p contenteditable="true">Kiskutya</p> -->
 		</Highlight>
 	</div>
 </main>

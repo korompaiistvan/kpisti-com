@@ -4,6 +4,7 @@
 	const vOffsetScale = 1;
 	const width = 400;
 	const height = 96;
+	let { color = 'yellowgreen' }: { color: string } = $props();
 
 	const halfHeight = height / 2;
 	const noise = (maxNoise: number) => {
@@ -141,12 +142,12 @@
 </script>
 
 <div class="container">
-	<svg class="highlight" aria-hidden="true" {width} {height}>
+	<svg class="highlight" aria-hidden="true" {width} {height} style:color>
 		<defs>
 			<linearGradient id="highlight-gradient">
-				<stop stop-color="limegreen" offset="0%" />
-				<stop stop-color="limegreen" stop-opacity="66%" offset={`${50 + noise(20) - 10}%`} />
-				<stop stop-color="limegreen" offset="100%" />
+				<stop stop-color="currentColor" offset="0%" />
+				<stop stop-color="currentColor" stop-opacity="66%" offset={`${50 + noise(20) - 10}%`} />
+				<stop stop-color="currentColor" offset="100%" />
 			</linearGradient>
 		</defs>
 		<filter id="blur">
@@ -221,7 +222,7 @@
 	}
 
 	.splodge {
-		fill: yellowgreen;
+		fill: currentColor;
 		opacity: 0.15;
 	}
 
