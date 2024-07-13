@@ -1,10 +1,12 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	const maxVNoise = 2;
 	const maxCenterPtNoise = 10;
 	const vOffsetScale = 1;
 	const width = 400;
 	const height = 96;
-	let { color = 'yellowgreen' }: { color: string } = $props();
+	let { color = 'yellowgreen', children }: { color: string; children?: Snippet } = $props();
 
 	const halfHeight = height / 2;
 	const noise = (maxNoise: number) => {
@@ -174,7 +176,9 @@
 		</g>
 	</svg>
 	<div class="slot-container">
-		<slot />
+		{#if children}
+			{@render children()}
+		{/if}
 	</div>
 </div>
 
