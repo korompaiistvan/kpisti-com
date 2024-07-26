@@ -13,7 +13,7 @@ function makeD(pts: [number, number][]) {
 }
 
 export function calculateAspectRatio(text: string) {
-	return text.length / 3;
+	return text.length / 2;
 }
 
 export function noise(maxNoise: number) {

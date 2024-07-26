@@ -20,8 +20,7 @@
 	const splodge = generateSplodgeDraw();
 </script>
 
-<div class="container">
-	<!-- <svg
+<!-- <svg
 		class="highlight"
 		aria-hidden="true"
 		width={hlPolygon.width}
@@ -57,32 +56,21 @@
 			/>
 		</g>
 	</svg> -->
-	<!-- {@html generateFullSvg(aspectRatio, 'hotpink')} -->
-	<span
-		class="slot-container"
-		style="background-image: url(/highlight-img?text=kiskutya&color={color})"
-	>
-		{#if children}
-			{@render children()}
-		{/if}
-	</span>
-</div>
+<!-- {@html generateFullSvg(aspectRatio, 'hotpink')} -->
+<span
+	class="slot-container"
+	style="background-image: url(/highlight-img?text=kiskutya&color={color})"
+>
+	{#if children}
+		{@render children()}
+	{/if}
+</span>
 
 <style>
-	.container {
-		position: relative;
-		isolation: isolate;
-	}
-
-	.highlight {
-		position: absolute;
-		left: -200px;
-	}
-
 	.slot-container {
-		position: absolute;
 		background-size: 100% 100%;
 		padding: 0.25em 0.5em;
+		display: inline-block;
 	}
 
 	.line {

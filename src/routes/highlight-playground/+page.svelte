@@ -4,9 +4,23 @@
 
 <main>
 	<div class="center">
-		<Highlight color="skyblue" text="Kiskutya">
-			<span> Kiskutya </span>
-		</Highlight>
+		<p>
+			<Highlight color="skyblue" text="Kiskutya">
+				<span> Kiskutya </span>
+			</Highlight>
+		</p>
+
+		<p>
+			<Highlight color="hotpink" text="Kiskutya">
+				<span> Cuki kiscica </span>
+			</Highlight>
+		</p>
+
+		<p>
+			<Highlight color="yellowgreen" text="Kiskutya">
+				<span> Legjobb fókabarát </span>
+			</Highlight>
+		</p>
 	</div>
 </main>
 
@@ -18,8 +32,9 @@
 	}
 
 	.center {
-		display: grid;
-		place-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	span {
