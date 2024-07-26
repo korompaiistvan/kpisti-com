@@ -4,8 +4,8 @@
 
 <main>
 	<div class="center">
-		<Highlight color="hotpink">
-			<!-- <p contenteditable="true">Kiskutya</p> -->
+		<Highlight color="skyblue" text="Kiskutya">
+			<span> Kiskutya </span>
 		</Highlight>
 	</div>
 </main>
@@ -20,5 +20,9 @@
 	.center {
 		display: grid;
 		place-items: center;
+	}
+
+	span {
+		font-size: 4rem;
 	}
 </style>
