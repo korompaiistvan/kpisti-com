@@ -5,12 +5,11 @@
 
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<!-- TODO check which weights are actually needed here and remove the rest -->
+	<!-- TODO download fonts and include in source for more privacy -->
 	<link
-		href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200..900&display=swap"
-		rel="stylesheet"
-	/>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@200..900&display=swap"
+		href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
 		rel="stylesheet"
 	/>
 </svelte:head>
@@ -31,8 +30,8 @@
 	</main>
 	<footer>
 		<p>
-			There are no cookies on this website because I do not actually need them. Here are a couple
-			links instead
+			There are no cookies on this website because I value your privacy. Here are a couple links
+			instead
 		</p>
 	</footer>
 </div>
@@ -57,6 +56,8 @@
 	}
 
 	nav a {
+		font-family: 'DM Mono', monospace;
+		font-size: 1.25rem;
 		text-decoration: none;
 		text-transform: uppercase;
 		color: unset;
