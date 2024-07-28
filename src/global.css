@@ -2,10 +2,3 @@
     font-family: Noto Sans;
     font-variant: common-ligatures tabular-nums;
 }
-
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #333;
-        color: #f1f1f1;
-    }
-}
