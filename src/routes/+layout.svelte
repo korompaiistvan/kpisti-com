@@ -1,6 +1,16 @@
 <script lang="ts">
 	import '../reset.css';
 	import '../global.css';
+
+	import { page } from '$app/stores';
+	import Highlighter from '$lib/components/Highlighter.svelte';
+	import type { Snippet } from 'svelte';
+
+	const { children }: { children?: Snippet } = $props();
+
+	const isCurrent = (href: string) => {
+		return href === $page.url.pathname ? 'page' : false;
+	};
 </script>
 
 <svelte:head>
@@ -9,24 +19,53 @@
 	<!-- TODO check which weights are actually needed here and remove the rest -->
 	<!-- TODO download fonts and include in source for more privacy -->
 	<link
-		href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+		href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Shadows+Into+Light+Two&display=swap"
 		rel="stylesheet"
 	/>
 </svelte:head>
 
+{#snippet navlink(href: string, text: string, color: string)}
+	<a {href} aria-current={isCurrent(href)}>
+		<Highlighter {color} {text} hoverOnly={isCurrent(href) !== 'page'}
+			><span>
+				{text}
+			</span>
+		</Highlighter>
+	</a>
+
+	<style>
+		a {
+			text-decoration: none;
+			color: unset;
+			font-family: 'DM Mono', monospace;
+			font-size: 1.25rem;
+			text-decoration: none;
+			text-transform: uppercase;
+			color: unset;
+		}
+
+		span {
+			padding: 0.25rem 0.5rem;
+			display: inline-block;
+		}
+	</style>
+{/snippet}
+
 <div class="container">
 	<nav>
-		<a class="name-home-link" href="/">István Korompai </a>
+		<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
 		<div class="secondary-links">
-			<a href="/">Home</a>
-			<a href="/work">Work</a>
-			<a href="/blog">Blog</a>
-			<a href="/about">About</a>
-			<a href="/contact">Contact</a>
+			{@render navlink('/', 'Home', '#931B5D')}
+			{@render navlink('/work', 'Work', '#37C0F9')}
+			{@render navlink('/blog', 'Blog', '#DBC2FA')}
+			{@render navlink('/about', 'About', '#F99437')}
+			{@render navlink('/contact', 'Contact', '#86A7FF')}
 		</div>
 	</nav>
 	<main>
-		<slot />
+		{#if children}
+			{@render children()}
+		{/if}
 	</main>
 	<footer>
 		<p>
@@ -53,20 +92,10 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		padding-block: 0.25rem 1rem;
 	}
 
 	nav a {
-		font-family: 'DM Mono', monospace;
-		font-size: 1.25rem;
-		text-decoration: none;
-		text-transform: uppercase;
-		color: unset;
-		padding: 0.25rem 0.5rem;
-	}
-
-	nav a:hover {
-		text-decoration: underline;
-		background-color: skyblue;
 	}
 
 	.secondary-links {
