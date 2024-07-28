@@ -21,7 +21,6 @@
 
 <style>
 	main {
-		background-color: var(--bg-color);
 		min-height: 100dvh;
 	}
 </style>

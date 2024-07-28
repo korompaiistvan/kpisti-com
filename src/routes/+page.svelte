@@ -1,3 +1,4 @@
+<a href="/highlight-playground">Highlighter playground</a>
 <p>
 	Hi there! I'm István Korompai, a data visualization engineer with 7 years of experience in turning
 	complex data into insightful and user-friendly visuals. My work revolves around creating
