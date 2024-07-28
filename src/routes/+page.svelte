@@ -14,9 +14,9 @@
 	</p>
 </div>
 
-<h2 id="wrote-header">Things I wrote</h2>
+<h2 id="wrote-header">Things I <Highlighter color="skyblue" text="wrote">wrote</Highlighter></h2>
 
-<h2 id="made-header">Stuff I made</h2>
+<h2 id="made-header">Stuff I <Highlighter color="hotpink" text="made">made</Highlighter></h2>
 
 <style>
 	.intro {
