@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
+import { render } from 'svelte/server';
 import type { RequestHandler } from './$types';
-import { calculateAspectRatio, generateFullSvg } from '$lib/highlight-generation';
+import Highlight from '$lib/components/Highlight.svelte';
 
 export const GET: RequestHandler = ({ url }) => {
 	const queryParams = new URLSearchParams(url.search);
@@ -14,11 +15,9 @@ export const GET: RequestHandler = ({ url }) => {
 		return error(400, 'color query parameter is required');
 	}
 
-	const aspectRatio = calculateAspectRatio(text);
+	const { body } = render(Highlight, { props: { text, color } });
 
-	const svgResponse = generateFullSvg(aspectRatio, color);
-
-	return new Response(svgResponse, {
+	return new Response(body, {
 		headers: {
 			'Content-Type': 'image/svg+xml'
 		}

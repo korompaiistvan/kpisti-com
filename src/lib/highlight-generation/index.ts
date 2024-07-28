@@ -2,6 +2,7 @@ const maxVNoise = 2;
 const maxCenterPtNoise = 10;
 const vOffsetScale = 1;
 const markerWidth = 24;
+
 export const cornerRadius = markerWidth / 6;
 
 function makeD(pts: [number, number][]) {
@@ -155,39 +156,4 @@ export function generateSplodgeDraw() {
 		`A${cornerRadius} ${cornerRadius} 0 0 1 0 ${2 * markerWidth - cornerRadius}`,
 		'Z'
 	].join(' ');
-}
-
-export function generateFullSvg(aspectRatio: number, color: string) {
-	const hlPolygon = generateHighlightPolygon(aspectRatio);
-	const splodge = generateSplodgeDraw();
-
-	return `
-<svg xmlns="http://www.w3.org/2000/svg" width="${hlPolygon.width}" height="${hlPolygon.height}">
-		<defs>
-			<linearGradient id="highlight-gradient">
-				<stop stop-color="${color}" offset="0%" />
-				<stop stop-color="${color}" stop-opacity="66%" offset="${50 + noise(20) - 10}%" />
-				<stop stop-color="${color}" offset="100%" />
-			</linearGradient>
-		</defs>
-		<filter id="blur">
-			<feGaussianBlur stdDeviation="1" />
-		</filter>
-		<g class="highlight-group">
-			<path d="${hlPolygon.fullPolygon}" fill="url(#highlight-gradient)" opacity="0.5" />
-			<path
-				d="${splodge}"
-				opacity="0.15"
-				fill="${color}"
-				transform="translate(${hlPolygon.points[0][0] - cornerRadius}, ${hlPolygon.points[0][1]}) rotate(${(hlPolygon.normalAngles[0] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)"
-			/>
-			<path
-				d="${splodge}"
-				opacity="0.15"
-				fill="${color}"
-				transform="translate(${hlPolygon.points[4][0] - cornerRadius}, ${hlPolygon.points[4][1]}) rotate(${(hlPolygon.normalAngles[4] / 2 / Math.PI) * 360 - 90} ${cornerRadius} 0)"
-			/>
-		</g>
-</svg>
-	`;
 }

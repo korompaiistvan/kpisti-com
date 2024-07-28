@@ -1,25 +1,27 @@
 <script lang="ts">
+	import Highlighter from '$lib/components/Highlighter.svelte';
 	import Highlight from '$lib/components/Highlight.svelte';
 </script>
 
 <main>
+	<Highlight color="skyblue" text="Kiskutya" />
 	<div class="center">
 		<p>
-			<Highlight color="skyblue" text="Kiskutya">
+			<Highlighter color="skyblue" text="Kiskutya">
 				<span> Kiskutya </span>
-			</Highlight>
+			</Highlighter>
 		</p>
 
 		<p>
-			<Highlight color="hotpink" text="Kiskutya">
+			<Highlighter color="hotpink" text="Kiskutya">
 				<span> Cuki kiscica </span>
-			</Highlight>
+			</Highlighter>
 		</p>
 
 		<p>
-			<Highlight color="yellowgreen" text="Kiskutya">
+			<Highlighter color="yellowgreen" text="Kiskutya">
 				<span> Legjobb fókabarát </span>
-			</Highlight>
+			</Highlighter>
 		</p>
 	</div>
 </main>
