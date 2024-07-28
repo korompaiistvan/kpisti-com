@@ -39,7 +39,7 @@
 		justify-content: center;
 	}
 
-	span {
+	p {
 		font-size: 4rem;
 	}
 </style>

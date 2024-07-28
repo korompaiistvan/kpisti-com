@@ -23,6 +23,5 @@
 	.slot-container {
 		background-size: 100% 100%;
 		padding: 0.25em 0.25em;
-		display: inline-block;
 	}
 </style>
