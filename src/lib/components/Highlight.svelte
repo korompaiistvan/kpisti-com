@@ -30,7 +30,26 @@
 	<filter id="blur">
 		<feGaussianBlur stdDeviation="1" />
 	</filter>
-	<g class="highlight-group" filter="url(#blur)">
+	<filter id="paper">
+		<!-- TODO: adjust noise scale based on mark size -->
+		<!-- <feFlood flood-color="red" result='flood'/> -->
+		<feTurbulence baseFrequency="0.1" numOctaves="2" result="noise" type="fractalNoise" />
+		<feColorMatrix type="luminanceToAlpha" result="noise-black" />
+		<feColorMatrix
+			type="matrix"
+			result="noise-white"
+			values="0 0 0 0 1
+					0 0 0 0 1
+					0 0 0 0 1
+					0 0 0 1 0"
+		/>
+		<feComponentTransfer result="noise-sharp">
+			<feFuncA type="table" tableValues="0 0 0.5" />
+		</feComponentTransfer>
+		<feBlend in2="SourceGraphic" result="blend" />
+		<feGaussianBlur stdDeviation="1" result="blur" />
+	</filter>
+	<g class="highlight-group" filter="url(#paper)">
 		<path d={hlPolygon.fullPolygon} fill="url(#highlight-gradient)" opacity={highlightOpacity} />
 		<use
 			href="#splodge"
