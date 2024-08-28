@@ -18,6 +18,7 @@ export const GET: RequestHandler = ({ url }) => {
 
 	const markerWidth = Number(queryParams.get('markerWidth')) || undefined;
 	const lines = Number(queryParams.get('lines')) || undefined;
+	const fontSize = Number(queryParams.get('fontSize')) || undefined;
 
 	if (markerWidth !== undefined && !markerWidths.includes(markerWidth as MarkerWidth)) {
 		return error(400, 'Invalid markerWidth supplied');
@@ -28,6 +29,7 @@ export const GET: RequestHandler = ({ url }) => {
 			text,
 			color,
 			markerWidth: markerWidth === undefined ? undefined : (markerWidth as MarkerWidth),
+			fontSize,
 			lines
 		}
 	});

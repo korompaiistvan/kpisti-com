@@ -5,8 +5,9 @@
 <div class="intro">
 	<h1>
 		I'm a
-		<Highlighter color="skyblue" text="data viz developer">data viz developer</Highlighter> <br /> based
-		in Vienna.
+		<Highlighter color="skyblue" text="data viz developer" markerWidth={24}
+			>data viz developer</Highlighter
+		> <br /> based in Vienna.
 	</h1>
 	<p class="intro--notes">
 		Follow me on Twitter, or LinkedIn or simply check out the awesome handmade dataviz I made with
@@ -14,9 +15,13 @@
 	</p>
 </div>
 
-<h2 id="wrote-header">Things I <Highlighter color="skyblue" text="wrote">wrote</Highlighter></h2>
+<h2 id="wrote-header">
+	Things I <Highlighter color="skyblue" text="wrote" markerWidth={24}>wrote</Highlighter>
+</h2>
 
-<h2 id="made-header">Stuff I <Highlighter color="hotpink" text="made">made</Highlighter></h2>
+<h2 id="made-header">
+	Stuff I <Highlighter color="hotpink" text="made" markerWidth={24}>made</Highlighter>
+</h2>
 
 <style>
 	.intro {

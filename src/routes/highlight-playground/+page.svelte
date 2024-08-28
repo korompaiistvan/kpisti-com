@@ -4,22 +4,27 @@
 </script>
 
 <main>
-	<Highlight color="skyblue" text="Kiskutya Nagykutya, nagyon hossz" markerWidth={6} />
+	<Highlight color="skyblue" text="Kiskutya Nagykutya, nagyon hossz" markerWidth={24} />
 	<div class="center">
 		<p>
-			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48}>
+			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48} fontSize={64}>
 				<span> Kiskutya </span>
+			</Highlighter>
+		</p>
+		<p>
+			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48} fontSize={64}>
+				<span> KISKUTYA </span>
 			</Highlighter>
 		</p>
 
 		<p>
-			<Highlighter color="hotpink" text="Kiskutya" markerWidth={48}>
+			<Highlighter color="hotpink" text="Cuki kiscica" markerWidth={48} fontSize={64}>
 				<span> Cuki kiscica </span>
 			</Highlighter>
 		</p>
 
 		<p>
-			<Highlighter color="yellowgreen" text="Kiskutya">
+			<Highlighter color="yellowgreen" text="Legjobb fókabarát" markerWidth={24} fontSize={64}>
 				<span> Legjobb fókabarát </span>
 			</Highlighter>
 		</p>

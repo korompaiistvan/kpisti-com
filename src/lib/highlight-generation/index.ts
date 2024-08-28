@@ -1,10 +1,12 @@
 const maxVNoise = 2;
 const maxCenterPtNoise = 10;
 const vOffsetScale = 1;
+export const hPadding = 0.25; //em
 export const markerWidths = [6, 12, 24, 48] as const;
 export type MarkerWidth = (typeof markerWidths)[number];
 
 export function getCornerRadius(markerWidth: MarkerWidth) {
+	return 4;
 	return markerWidth / 6;
 }
 
@@ -17,7 +19,16 @@ function makeD(pts: [number, number][]) {
 }
 
 export function calculateAspectRatio(text: string) {
-	return text.length / 2;
+	return text.length / 12;
+}
+
+export function calculateHeight(markerWidth: MarkerWidth, lines: number) {
+	return markerWidth * lines;
+}
+
+export function estimateWidth(text: string, fontSize: number) {
+	const aspectRatio = 1 / 2; // we estimate that glyphs are on average 2/3 as wide as they are tall
+	return text.length * aspectRatio * fontSize + hPadding * fontSize * 2;
 }
 
 export function noise(maxNoise: number) {
@@ -27,7 +38,7 @@ export function noise(maxNoise: number) {
 
 export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth) {
 	const cornerRadius = getCornerRadius(markerWidth);
-	const height = markerWidth * 3;
+	const height = markerWidth * 1.05;
 	const halfHeight = height / 2;
 	const firstVOffsetSign = Math.round(Math.random()) * 2 - 1;
 
@@ -61,8 +72,8 @@ export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth
 		const normalAngle = normalAngles[idx];
 
 		return [
-			clPt[0] + Math.cos(normalAngle) * -markerWidth,
-			clPt[1] + Math.sin(normalAngle) * -markerWidth
+			clPt[0] + (Math.cos(normalAngle) * -markerWidth) / 2,
+			clPt[1] + (Math.sin(normalAngle) * -markerWidth) / 2
 		];
 	});
 
@@ -70,8 +81,8 @@ export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth
 		const normalAngle = normalAngles[idx];
 
 		return [
-			clPt[0] + Math.cos(normalAngle) * markerWidth,
-			clPt[1] + Math.sin(normalAngle) * markerWidth
+			clPt[0] + (Math.cos(normalAngle) * markerWidth) / 2,
+			clPt[1] + (Math.sin(normalAngle) * markerWidth) / 2
 		];
 	});
 
@@ -156,8 +167,8 @@ export function generateSplodgeDraw(markerWidth: MarkerWidth) {
 	return [
 		`M0 ${cornerRadius}`,
 		`A${cornerRadius} ${cornerRadius} 0 0 1 ${2 * cornerRadius} ${cornerRadius}`,
-		`V${2 * markerWidth - cornerRadius}`,
-		`A${cornerRadius} ${cornerRadius} 0 0 1 0 ${2 * markerWidth - cornerRadius}`,
+		`V${markerWidth - cornerRadius}`,
+		`A${cornerRadius} ${cornerRadius} 0 0 1 0 ${markerWidth - cornerRadius}`,
 		'Z'
 	].join(' ');
 }
