@@ -1,19 +1,36 @@
 <script lang="ts">
+	import { encodeObjectToSearchParams } from '$lib';
+	import type { MarkerWidth } from '$lib/highlight-generation';
 	import type { Snippet } from 'svelte';
 
 	let {
 		color = 'yellowgreen',
 		text = 'default',
 		hoverOnly = false,
+		markerWidth,
+		lines,
 		children
-	}: { color: string; text?: string; hoverOnly?: boolean; children?: Snippet } = $props();
+	}: {
+		color: string;
+		text?: string;
+		hoverOnly?: boolean;
+		children?: Snippet;
+		markerWidth?: MarkerWidth;
+		lines?: number;
+	} = $props();
+
+	const urlParamString = encodeObjectToSearchParams({
+		text,
+		color,
+		markerWidth,
+		lines
+	});
+	const backgroundImgUrl = `url("/highlight-img?${urlParamString}")`;
 </script>
 
 <span
 	class="slot-container"
-	style:--background-image="url(/highlight-img?text={encodeURIComponent(
-		text
-	)}&color={encodeURIComponent(color)})"
+	style:--background-image={backgroundImgUrl}
 	class:hoveronly={hoverOnly}
 >
 	{#if children}

@@ -4,16 +4,16 @@
 </script>
 
 <main>
-	<Highlight color="skyblue" text="Kiskutya" />
+	<Highlight color="skyblue" text="Kiskutya Nagykutya, nagyon hossz" markerWidth={6} />
 	<div class="center">
 		<p>
-			<Highlighter color="skyblue" text="Kiskutya">
+			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48}>
 				<span> Kiskutya </span>
 			</Highlighter>
 		</p>
 
 		<p>
-			<Highlighter color="hotpink" text="Kiskutya">
+			<Highlighter color="hotpink" text="Kiskutya" markerWidth={48}>
 				<span> Cuki kiscica </span>
 			</Highlighter>
 		</p>

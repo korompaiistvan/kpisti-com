@@ -1,9 +1,12 @@
 const maxVNoise = 2;
 const maxCenterPtNoise = 10;
 const vOffsetScale = 1;
-const markerWidth = 24;
+export const markerWidths = [6, 12, 24, 48] as const;
+export type MarkerWidth = (typeof markerWidths)[number];
 
-export const cornerRadius = markerWidth / 6;
+export function getCornerRadius(markerWidth: MarkerWidth) {
+	return markerWidth / 6;
+}
 
 function makeD(pts: [number, number][]) {
 	return [
@@ -22,9 +25,9 @@ export function noise(maxNoise: number) {
 	return Math.round(maxNoise * (Math.random() - 0.5) * 2 * 100) / 100;
 }
 
-export function generateHighlightPolygon(aspectRatio: number) {
+export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth) {
+	const cornerRadius = getCornerRadius(markerWidth);
 	const height = markerWidth * 3;
-	const width = height * aspectRatio;
 	const halfHeight = height / 2;
 	const firstVOffsetSign = Math.round(Math.random()) * 2 - 1;
 
@@ -148,7 +151,8 @@ export function generateHighlightPolygon(aspectRatio: number) {
 	};
 }
 
-export function generateSplodgeDraw() {
+export function generateSplodgeDraw(markerWidth: MarkerWidth) {
+	const cornerRadius = getCornerRadius(markerWidth);
 	return [
 		`M0 ${cornerRadius}`,
 		`A${cornerRadius} ${cornerRadius} 0 0 1 ${2 * cornerRadius} ${cornerRadius}`,

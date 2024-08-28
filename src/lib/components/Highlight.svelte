@@ -3,19 +3,28 @@
 		generateHighlightPolygon,
 		generateSplodgeDraw,
 		noise,
-		cornerRadius,
-		calculateAspectRatio
+		getCornerRadius,
+		calculateAspectRatio,
+		type MarkerWidth
 	} from '$lib/highlight-generation';
 
 	const highlightOpacity = 0.2;
 	const splodgeOpacity = 0.2;
 
-	const { text, color }: { color: string; text: string } = $props();
+	const {
+		text,
+		color,
+		markerWidth = 12,
+		lines = 1
+	}: { color: string; text: string; markerWidth?: MarkerWidth; lines?: number } = $props();
 
 	const aspectRatio = calculateAspectRatio(text ?? '');
+	const height = markerWidth * lines;
+	const width = height * aspectRatio;
 
-	const hlPolygon = generateHighlightPolygon(aspectRatio);
-	const splodge = generateSplodgeDraw();
+	const hlPolygon = generateHighlightPolygon(width, markerWidth);
+	const splodge = generateSplodgeDraw(markerWidth);
+	const cornerRadius = getCornerRadius(markerWidth);
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" width={hlPolygon.width} height={hlPolygon.height}>

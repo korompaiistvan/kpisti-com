@@ -26,7 +26,7 @@
 
 {#snippet navlink(href: string, text: string, color: string)}
 	<a {href} aria-current={isCurrent(href)}>
-		<Highlighter {color} {text} hoverOnly={isCurrent(href) !== 'page'}
+		<Highlighter {color} {text} hoverOnly={isCurrent(href) !== 'page'} markerWidth={12}
 			><span>
 				{text}
 			</span>

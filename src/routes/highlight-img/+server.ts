@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import { render } from 'svelte/server';
 import type { RequestHandler } from './$types';
 import Highlight from '$lib/components/Highlight.svelte';
+import { markerWidths, type MarkerWidth } from '$lib/highlight-generation';
 
 export const GET: RequestHandler = ({ url }) => {
 	const queryParams = new URLSearchParams(url.search);
@@ -15,7 +16,21 @@ export const GET: RequestHandler = ({ url }) => {
 		return error(400, 'color query parameter is required');
 	}
 
-	const { body } = render(Highlight, { props: { text, color } });
+	const markerWidth = Number(queryParams.get('markerWidth')) || undefined;
+	const lines = Number(queryParams.get('lines')) || undefined;
+
+	if (markerWidth !== undefined && !markerWidths.includes(markerWidth as MarkerWidth)) {
+		return error(400, 'Invalid markerWidth supplied');
+	}
+
+	const { body } = render(Highlight, {
+		props: {
+			text,
+			color,
+			markerWidth: markerWidth === undefined ? undefined : (markerWidth as MarkerWidth),
+			lines
+		}
+	});
 
 	return new Response(body, {
 		headers: {
