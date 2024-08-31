@@ -5,7 +5,8 @@
 		noise,
 		getCornerRadius,
 		type MarkerWidth,
-		calculateHeight
+		calculateHeight,
+		lineOffsetScale
 	} from '$lib/highlight-generation';
 
 	const highlightOpacity = 0.2;
@@ -67,7 +68,7 @@
 		<g
 			class="highlight-group"
 			filter="url(#paper)"
-			transform="translate(0, {idx * markerWidth * 0.85})"
+			transform="translate(0, {idx * markerWidth * lineOffsetScale})"
 		>
 			<path
 				d={hlPolygon.fullPolygon}

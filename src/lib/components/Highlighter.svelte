@@ -41,7 +41,7 @@
 <span
 	class="slot-container"
 	style:--background-image={backgroundImgUrl}
-	style:--h-padding={hPadding}
+	style:--h-padding="{hPadding}em"
 	style:background-size="100% {height}px"
 	class:hoveronly={hoverOnly}
 >
@@ -53,7 +53,7 @@
 <style>
 	.slot-container {
 		background-repeat: no-repeat;
-		background-position: bottom 0.25em center;
+		background-position: bottom 0.1em center;
 		padding: 0.25em var(--h-padding) 0 var(--h-padding);
 		background-image: var(--background-image);
 	}

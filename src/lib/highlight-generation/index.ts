@@ -1,8 +1,9 @@
 const maxVNoise = 2;
 const maxCenterPtHNoise = 10; // percent
 const vOffsetScale = 1;
+export const lineOffsetScale = 0.85;
 export const hPadding = 0.25; //em
-export const markerWidths = [6, 12, 24, 48] as const;
+export const markerWidths = [6, 12, 24, 48, 64] as const;
 export type MarkerWidth = (typeof markerWidths)[number];
 
 export function getCornerRadius(markerWidth: MarkerWidth) {
@@ -19,7 +20,7 @@ function makeD(pts: [number, number][]) {
 }
 
 export function calculateHeight(markerWidth: MarkerWidth, lines: number) {
-	return markerWidth * lines + 2 * maxVNoise;
+	return markerWidth * (1 + (lines - 1) * lineOffsetScale) + 2 * maxVNoise;
 }
 
 export function estimateWidth(text: string, fontSize: number) {
@@ -66,8 +67,8 @@ export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth
 
 	// first we figure out the points of the centerline
 	let clPts: [number, number][] = [
-		[hPadding, halfHeight + noise(maxVNoise)], // start
-		[width / 4 + hPadding / 2, halfHeight + noise(maxVNoise) * vOffsetScale * firstVOffsetSign], // 1 Q Bezier control
+		[0, halfHeight + noise(maxVNoise)], // start
+		[width / 4, halfHeight + noise(maxVNoise) * vOffsetScale * firstVOffsetSign], // 1 Q Bezier control
 		[
 			width / 2 + noise((maxCenterPtHNoise / 100) * width),
 			halfHeight - noise(maxVNoise) * firstVOffsetSign
@@ -75,11 +76,8 @@ export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth
 	];
 
 	clPts = clPts.concat([
-		[
-			clPts[2][0] + (clPts[2][0] - clPts[1][0]) - hPadding / 2,
-			clPts[2][1] + (clPts[2][1] - clPts[1][1])
-		], // 2 Q Bezier Control
-		[width - hPadding, halfHeight + noise(maxVNoise)] // Line end
+		[clPts[2][0] + (clPts[2][0] - clPts[1][0]), clPts[2][1] + (clPts[2][1] - clPts[1][1])], // 2 Q Bezier Control
+		[width, halfHeight + noise(maxVNoise)] // Line end
 	]);
 
 	const normalAngles = clPts.map((currPt, idx) => {

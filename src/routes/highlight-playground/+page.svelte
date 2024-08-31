@@ -8,7 +8,7 @@
 	<Highlight color="orange" width={200} markerWidth={24} lines={2} />
 	<div class="center">
 		<p>
-			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48} fontSize={64}>
+			<Highlighter color="skyblue" text="Kiskutya" markerWidth={64} fontSize={64}>
 				<span> Kiskutya </span>
 			</Highlighter>
 		</p>

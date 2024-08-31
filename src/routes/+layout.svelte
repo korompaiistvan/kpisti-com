@@ -25,7 +25,7 @@
 </svelte:head>
 
 {#snippet navlink(href: string, text: string, color: string)}
-	<a {href} aria-current={isCurrent(href)}>
+	<a {href} aria-current={isCurrent(href)} class="nav-link">
 		<Highlighter
 			{color}
 			{text}
@@ -37,9 +37,8 @@
 			</span>
 		</Highlighter>
 	</a>
-
 	<style>
-		a {
+		.nav-link {
 			text-decoration: none;
 			color: unset;
 			font-family: 'DM Mono', monospace;
@@ -47,11 +46,6 @@
 			text-decoration: none;
 			text-transform: uppercase;
 			color: unset;
-		}
-
-		span {
-			padding: 0.25rem 0.5rem;
-			display: inline-block;
 		}
 	</style>
 {/snippet}
@@ -100,7 +94,14 @@
 		padding-block: 0.25rem 1rem;
 	}
 
-	nav a {
+	.name-home-link {
+		text-decoration: none;
+		color: unset;
+		font-family: 'DM Mono', monospace;
+		font-size: 1.25rem;
+		text-decoration: none;
+		text-transform: uppercase;
+		color: unset;
 	}
 
 	.secondary-links {
