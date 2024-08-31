@@ -4,7 +4,7 @@
 </script>
 
 <main>
-	<Highlight color="skyblue" text="Kiskutya Nagykutya, nagyon hossz" markerWidth={24} />
+	<Highlight color="skyblue" width={300} markerWidth={24} lines={1} />
 	<div class="center">
 		<p>
 			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48} fontSize={64}>

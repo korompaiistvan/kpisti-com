@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { encodeObjectToSearchParams } from '$lib';
-	import { calculateHeight, hPadding, type MarkerWidth } from '$lib/highlight-generation';
+	import {
+		calculateHeight,
+		estimateWidth,
+		hPadding,
+		type MarkerWidth
+	} from '$lib/highlight-generation';
 	import type { Snippet } from 'svelte';
 
 	let {
 		color = 'yellowgreen',
 		text = 'default',
 		hoverOnly = false,
+		fontSize = 12,
 		markerWidth,
 		lines = 1,
-		fontSize,
 		children
 	}: {
 		color: string;
@@ -21,11 +26,12 @@
 		fontSize?: number;
 	} = $props();
 
+	const width = estimateWidth(text, fontSize);
+
 	const urlParamString = encodeObjectToSearchParams({
-		text,
+		width,
 		color,
 		markerWidth,
-		fontSize,
 		lines
 	});
 	const backgroundImgUrl = `url("/highlight-img?${urlParamString}")`;

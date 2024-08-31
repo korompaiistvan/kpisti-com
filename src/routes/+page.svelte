@@ -5,9 +5,9 @@
 <div class="intro">
 	<h1>
 		I'm a
-		<Highlighter color="skyblue" text="data viz developer" markerWidth={24}
-			>data viz developer</Highlighter
-		> <br /> based in Vienna.
+		<Highlighter color="skyblue" text="data viz developer" markerWidth={24}>
+			data viz developer
+		</Highlighter> <br /> based in Vienna.
 	</h1>
 	<p class="intro--notes">
 		Follow me on Twitter, or LinkedIn or simply check out the awesome handmade dataviz I made with

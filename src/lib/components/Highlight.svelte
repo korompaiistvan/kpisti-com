@@ -4,9 +4,7 @@
 		generateSplodgeDraw,
 		noise,
 		getCornerRadius,
-		calculateAspectRatio,
 		type MarkerWidth,
-		estimateWidth,
 		calculateHeight
 	} from '$lib/highlight-generation';
 
@@ -14,21 +12,18 @@
 	const splodgeOpacity = 0.2;
 
 	const {
-		text,
 		color,
 		markerWidth = 12,
-		fontSize = 12,
-		lines = 1
+		width,
+		lines
 	}: {
 		color: string;
-		text: string;
 		markerWidth?: MarkerWidth;
-		lines?: number;
-		fontSize?: number;
+		lines: number;
+		width: number;
 	} = $props();
 
 	const height = calculateHeight(markerWidth, lines);
-	const width = estimateWidth(text, fontSize);
 
 	const hlPolygon = generateHighlightPolygon(width, markerWidth);
 	const splodge = generateSplodgeDraw(markerWidth);
