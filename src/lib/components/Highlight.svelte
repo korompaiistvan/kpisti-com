@@ -28,16 +28,18 @@
 	const hlPolygon = generateHighlightPolygon(width, markerWidth);
 	const splodge = generateSplodgeDraw(markerWidth);
 	const cornerRadius = getCornerRadius(markerWidth);
+
+	const nonce = color;
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" width={hlPolygon.width} {height}>
 	<defs>
-		<linearGradient id="highlight-gradient">
+		<linearGradient id="highlight-gradient-{nonce}">
 			<stop stop-color={color} offset="0%" />
 			<stop stop-color={color} stop-opacity="66%" offset="{50 + noise(20) - 10}%" />
 			<stop stop-color={color} offset="100%" />
 		</linearGradient>
-		<path id="splodge" d={splodge} opacity={splodgeOpacity} fill={color} />
+		<path id="splodge-{nonce}" d={splodge} opacity={splodgeOpacity} fill={color} />
 	</defs>
 	<filter id="blur">
 		<feGaussianBlur stdDeviation="1" />
@@ -62,15 +64,19 @@
 		<feGaussianBlur stdDeviation="1" result="blur" />
 	</filter>
 	<g class="highlight-group" filter="url(#paper)">
-		<path d={hlPolygon.fullPolygon} fill="url(#highlight-gradient)" opacity={highlightOpacity} />
+		<path
+			d={hlPolygon.fullPolygon}
+			fill="url(#highlight-gradient-{nonce})"
+			opacity={highlightOpacity}
+		/>
 		<use
-			href="#splodge"
+			href="#splodge-{nonce}"
 			transform="translate({hlPolygon.points[0][0] - cornerRadius}, {hlPolygon
 				.points[0][1]}) rotate({(hlPolygon.normalAngles[0] / 2 / Math.PI) * 360 -
 				90} {cornerRadius} 0)"
 		/>
 		<use
-			href="#splodge"
+			href="#splodge-{nonce}"
 			transform="translate({hlPolygon.points[4][0] - cornerRadius}, {hlPolygon
 				.points[4][1]}) rotate({(hlPolygon.normalAngles[4] / 2 / Math.PI) * 360 -
 				90} {cornerRadius} 0)"

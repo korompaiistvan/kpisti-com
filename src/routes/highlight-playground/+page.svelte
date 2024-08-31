@@ -5,6 +5,7 @@
 
 <main>
 	<Highlight color="skyblue" width={300} markerWidth={24} lines={1} />
+	<Highlight color="orange" width={200} markerWidth={48} lines={1} />
 	<div class="center">
 		<p>
 			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48} fontSize={64}>

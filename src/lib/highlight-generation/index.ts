@@ -1,5 +1,5 @@
 const maxVNoise = 2;
-const maxCenterPtNoise = 10;
+const maxCenterPtHNoise = 10; // percent
 const vOffsetScale = 1;
 export const hPadding = 0.25; //em
 export const markerWidths = [6, 12, 24, 48] as const;
@@ -18,12 +18,8 @@ function makeD(pts: [number, number][]) {
 	].join(' ');
 }
 
-export function calculateAspectRatio(text: string) {
-	return text.length / 12;
-}
-
 export function calculateHeight(markerWidth: MarkerWidth, lines: number) {
-	return markerWidth * lines;
+	return markerWidth * lines + 2 * maxVNoise;
 }
 
 export function estimateWidth(text: string, fontSize: number) {
@@ -33,27 +29,57 @@ export function estimateWidth(text: string, fontSize: number) {
 
 export function noise(maxNoise: number) {
 	// we could do fancier noises, but this one is probably okay for this use case
-	return Math.round(maxNoise * (Math.random() - 0.5) * 2 * 100) / 100;
+	// it generates a uniform random value in the range [-maxNoise, +maxNoise]
+	const noise = maxNoise * (Math.random() - 0.5) * 2;
+	return Math.round(noise * 100) / 100;
+}
+
+function findHExtent(ptArrays: [number, number][][]) {
+	let minX = Infinity;
+	let maxX = -Infinity;
+	for (const ptArr of ptArrays) {
+		for (const pt of ptArr) {
+			if (pt[0] < minX) minX = pt[0];
+			if (pt[0] > maxX) maxX = pt[0];
+		}
+	}
+
+	return [minX, maxX];
+}
+
+function scaleToHFit(ptArrays: [number, number][][], width: number) {
+	const [minX, maxX] = findHExtent(ptArrays);
+	for (const ptArr of ptArrays) {
+		for (const pt of ptArr) {
+			pt[0] -= minX * ((maxX - pt[0]) / maxX); // normalizes left side to 0
+			// pt[0] += pt[0] - (maxX - width) * (pt[0] / maxX); // normalizes right side to width
+			pt[0] -= (maxX - width) * (pt[0] / maxX);
+		}
+	}
 }
 
 export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth) {
 	const cornerRadius = getCornerRadius(markerWidth);
-	const height = markerWidth * 1.05;
+	const height = markerWidth + 2 * maxVNoise;
 	const halfHeight = height / 2;
 	const firstVOffsetSign = Math.round(Math.random()) * 2 - 1;
 
+	// first we figure out the points of the centerline
 	let clPts: [number, number][] = [
-		[0, halfHeight + noise(maxVNoise)], // start
+		[hPadding, halfHeight + noise(maxVNoise)], // start
+		[width / 4 + hPadding / 2, halfHeight + noise(maxVNoise) * vOffsetScale * firstVOffsetSign], // 1 Q Bezier control
 		[
-			width / 4 + noise(maxCenterPtNoise),
-			halfHeight - noise(maxVNoise) * vOffsetScale * firstVOffsetSign
-		], // 1 Q Bezier control
-		[width / 2 + noise(maxCenterPtNoise), halfHeight + noise(maxVNoise) * firstVOffsetSign] // 1 Q Bezier end
+			width / 2 + noise((maxCenterPtHNoise / 100) * width),
+			halfHeight - noise(maxVNoise) * firstVOffsetSign
+		] // 1 Q Bezier end
 	];
 
 	clPts = clPts.concat([
-		[clPts[2][0] + (clPts[2][0] - clPts[1][0]), clPts[2][1] + (clPts[2][1] - clPts[1][1])], // 2 Q Bezier Control
-		[width, halfHeight + noise(maxVNoise)] // Line end
+		[
+			clPts[2][0] + (clPts[2][0] - clPts[1][0]) - hPadding / 2,
+			clPts[2][1] + (clPts[2][1] - clPts[1][1])
+		], // 2 Q Bezier Control
+		[width - hPadding, halfHeight + noise(maxVNoise)] // Line end
 	]);
 
 	const normalAngles = clPts.map((currPt, idx) => {
@@ -86,9 +112,10 @@ export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth
 		];
 	});
 
+	scaleToHFit([clPts, topLinePts, botLinePts], width);
 	const clD = makeD(clPts);
 	const topLineD = makeD(topLinePts);
-	const bottomLineD = makeD(botLinePts);
+	const botLineD = makeD(botLinePts);
 
 	const roundingOffsets = [
 		[
@@ -154,7 +181,7 @@ export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth
 		fullPolygon,
 		centerLine: clD,
 		topLine: topLineD,
-		bottomLine: bottomLineD,
+		bottomLine: botLineD,
 		points: fullPolygonPoints,
 		normalAngles,
 		width,
