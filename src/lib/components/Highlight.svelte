@@ -63,23 +63,29 @@
 		<feBlend in2="SourceGraphic" result="blend" />
 		<feGaussianBlur stdDeviation="1" result="blur" />
 	</filter>
-	<g class="highlight-group" filter="url(#paper)">
-		<path
-			d={hlPolygon.fullPolygon}
-			fill="url(#highlight-gradient-{nonce})"
-			opacity={highlightOpacity}
-		/>
-		<use
-			href="#splodge-{nonce}"
-			transform="translate({hlPolygon.points[0][0] - cornerRadius}, {hlPolygon
-				.points[0][1]}) rotate({(hlPolygon.normalAngles[0] / 2 / Math.PI) * 360 -
-				90} {cornerRadius} 0)"
-		/>
-		<use
-			href="#splodge-{nonce}"
-			transform="translate({hlPolygon.points[4][0] - cornerRadius}, {hlPolygon
-				.points[4][1]}) rotate({(hlPolygon.normalAngles[4] / 2 / Math.PI) * 360 -
-				90} {cornerRadius} 0)"
-		/>
-	</g>
+	{#each { length: lines } as _, idx}
+		<g
+			class="highlight-group"
+			filter="url(#paper)"
+			transform="translate(0, {idx * markerWidth * 0.85})"
+		>
+			<path
+				d={hlPolygon.fullPolygon}
+				fill="url(#highlight-gradient-{nonce})"
+				opacity={highlightOpacity}
+			/>
+			<use
+				href="#splodge-{nonce}"
+				transform="translate({hlPolygon.points[0][0] - cornerRadius}, {hlPolygon
+					.points[0][1]}) rotate({(hlPolygon.normalAngles[0] / 2 / Math.PI) * 360 -
+					90} {cornerRadius} 0)"
+			/>
+			<use
+				href="#splodge-{nonce}"
+				transform="translate({hlPolygon.points[4][0] - cornerRadius}, {hlPolygon
+					.points[4][1]}) rotate({(hlPolygon.normalAngles[4] / 2 / Math.PI) * 360 -
+					90} {cornerRadius} 0)"
+			/>
+		</g>
+	{/each}
 </svg>

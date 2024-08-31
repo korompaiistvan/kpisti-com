@@ -5,7 +5,7 @@
 
 <main>
 	<Highlight color="skyblue" width={300} markerWidth={24} lines={1} />
-	<Highlight color="orange" width={200} markerWidth={48} lines={1} />
+	<Highlight color="orange" width={200} markerWidth={24} lines={2} />
 	<div class="center">
 		<p>
 			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48} fontSize={64}>
@@ -13,7 +13,7 @@
 			</Highlighter>
 		</p>
 		<p>
-			<Highlighter color="skyblue" text="Kiskutya" markerWidth={48} fontSize={64}>
+			<Highlighter color="skyblue" text="Kiskutya" markerWidth={24} lines={2} fontSize={64}>
 				<span> KISKUTYA </span>
 			</Highlighter>
 		</p>
