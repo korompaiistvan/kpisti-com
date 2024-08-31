@@ -35,7 +35,7 @@
 		lines
 	});
 	const backgroundImgUrl = `url("/highlight-img?${urlParamString}")`;
-	const height = calculateHeight(markerWidth, lines);
+	const height = calculateHeight(markerWidth, lines, width);
 </script>
 
 <span
@@ -53,8 +53,8 @@
 <style>
 	.slot-container {
 		background-repeat: no-repeat;
-		background-position: bottom 0.1em center;
-		padding: 0.25em var(--h-padding) 0 var(--h-padding);
+		background-position: center center;
+		padding: var(--h-padding) 0.25em;
 		background-image: var(--background-image);
 	}
 

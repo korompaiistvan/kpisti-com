@@ -1,7 +1,7 @@
-const maxVNoise = 2;
+const maxSlant = 0.33 / (2 * Math.PI);
 const maxCenterPtHNoise = 10; // percent
 const vOffsetScale = 1;
-export const lineOffsetScale = 0.85;
+export const lineOffsetScale = 0.8;
 export const hPadding = 0.25; //em
 export const markerWidths = [6, 12, 24, 48, 64] as const;
 export type MarkerWidth = (typeof markerWidths)[number];
@@ -19,8 +19,8 @@ function makeD(pts: [number, number][]) {
 	].join(' ');
 }
 
-export function calculateHeight(markerWidth: MarkerWidth, lines: number) {
-	return markerWidth * (1 + (lines - 1) * lineOffsetScale) + 2 * maxVNoise;
+export function calculateHeight(markerWidth: MarkerWidth, lines: number, width: number) {
+	return markerWidth * (1 + (lines - 1) * lineOffsetScale) + 2 * getMaxVNoise(width);
 }
 
 export function estimateWidth(text: string, fontSize: number) {
@@ -59,8 +59,13 @@ function scaleToHFit(ptArrays: [number, number][][], width: number) {
 	}
 }
 
+function getMaxVNoise(width: number) {
+	return (Math.tan(maxSlant) * width) / 4;
+}
+
 export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth) {
 	const cornerRadius = getCornerRadius(markerWidth);
+	const maxVNoise = getMaxVNoise(width);
 	const height = markerWidth + 2 * maxVNoise;
 	const halfHeight = height / 2;
 	const firstVOffsetSign = Math.round(Math.random()) * 2 - 1;

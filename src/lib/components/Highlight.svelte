@@ -9,8 +9,8 @@
 		lineOffsetScale
 	} from '$lib/highlight-generation';
 
-	const highlightOpacity = 0.2;
-	const splodgeOpacity = 0.2;
+	const highlightOpacity = 0.4;
+	const splodgeOpacity = 0.333;
 
 	const {
 		color,
@@ -24,7 +24,7 @@
 		width: number;
 	} = $props();
 
-	const height = calculateHeight(markerWidth, lines);
+	const height = calculateHeight(markerWidth, lines, width);
 
 	const hlPolygon = generateHighlightPolygon(width, markerWidth);
 	const splodge = generateSplodgeDraw(markerWidth);
