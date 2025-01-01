@@ -8,6 +8,7 @@ export const GET: RequestHandler = ({ url }) => {
 	const queryParams = new URLSearchParams(url.search);
 	const width = Number(queryParams.get('width')) || undefined;
 	const color = queryParams.get('color');
+	const seed = Number(queryParams.get('seed')) || undefined;
 
 	if (!color) {
 		return error(400, 'color query parameter is required');
@@ -29,7 +30,8 @@ export const GET: RequestHandler = ({ url }) => {
 			width,
 			color,
 			markerWidth: markerWidth === undefined ? undefined : (markerWidth as MarkerWidth),
-			lines
+			lines,
+			seed
 		}
 	});
 

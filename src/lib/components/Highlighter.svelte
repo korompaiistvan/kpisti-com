@@ -6,7 +6,7 @@
 		hPadding,
 		type MarkerWidth
 	} from '$lib/highlight-generation';
-	import type { Snippet } from 'svelte';
+	import { type Snippet, getContext } from 'svelte';
 
 	let {
 		color = 'yellowgreen',
@@ -26,15 +26,20 @@
 		fontSize?: number;
 	} = $props();
 
+	const seed = getContext('highlightSeed') as () => number;
+
 	const width = estimateWidth(text, fontSize);
 
-	const urlParamString = encodeObjectToSearchParams({
-		width,
-		color,
-		markerWidth,
-		lines
-	});
-	const backgroundImgUrl = `url("/highlight-img?${urlParamString}")`;
+	const urlParamString = $derived(
+		encodeObjectToSearchParams({
+			width,
+			color,
+			markerWidth,
+			lines,
+			seed: seed()
+		})
+	);
+	const backgroundImgUrl = $derived(`url("/highlight-img?${urlParamString}")`);
 	const height = calculateHeight(markerWidth, lines, width);
 </script>
 
@@ -56,6 +61,7 @@
 		background-position: center center;
 		padding: var(--h-padding) 0.25em;
 		background-image: var(--background-image);
+		transition: background-image 1s ease-in-out;
 	}
 
 	.hoveronly {

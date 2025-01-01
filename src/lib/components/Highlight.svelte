@@ -2,7 +2,7 @@
 	import {
 		generateHighlightPolygon,
 		generateSplodgeDraw,
-		noise,
+		noiseFactory,
 		getCornerRadius,
 		type MarkerWidth,
 		calculateHeight,
@@ -16,17 +16,21 @@
 		color,
 		markerWidth = 12,
 		width,
-		lines
+		lines,
+		seed
 	}: {
 		color: string;
 		markerWidth?: MarkerWidth;
 		lines: number;
 		width: number;
+		seed?: number;
 	} = $props();
+
+	const noise = noiseFactory(seed);
 
 	const height = calculateHeight(markerWidth, lines, width);
 
-	const hlPolygon = generateHighlightPolygon(width, markerWidth);
+	const hlPolygon = generateHighlightPolygon(width, markerWidth, seed);
 	const splodge = generateSplodgeDraw(markerWidth);
 	const cornerRadius = getCornerRadius(markerWidth);
 

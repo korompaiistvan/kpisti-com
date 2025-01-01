@@ -4,10 +4,17 @@
 
 	import { page } from '$app/stores';
 	import Highlighter from '$lib/components/Highlighter.svelte';
-	import type { Snippet } from 'svelte';
+	import { setContext, type Snippet } from 'svelte';
 	import { COLORS } from '$lib/color-palette';
 
 	const { children }: { children?: Snippet } = $props();
+
+	let highlightSeed = $state(123);
+	setContext('highlightSeed', () => highlightSeed);
+
+	function updateHighlightSeed() {
+		highlightSeed = Math.floor(Math.random() * 1000);
+	}
 
 	const isCurrent = (href: string) => {
 		return href === $page.url.pathname ? 'page' : false;
@@ -60,6 +67,7 @@
 			{@render navlink('/blog', 'Blog', COLORS.purple)}
 			{@render navlink('/about', 'About', COLORS.orange)}
 			{@render navlink('/contact', 'Contact', COLORS.blue)}
+			<button type="button" onclick={updateHighlightSeed}>R</button>
 		</div>
 	</nav>
 	<main>

@@ -1,3 +1,5 @@
+import { splitmix32 } from '$lib/random';
+
 const maxSlant = 0.33 / (2 * Math.PI);
 const maxCenterPtHNoise = 10; // percent
 const vOffsetScale = 1;
@@ -28,11 +30,15 @@ export function estimateWidth(text: string, fontSize: number) {
 	return text.length * aspectRatio * fontSize + hPadding * fontSize * 2;
 }
 
-export function noise(maxNoise: number) {
-	// we could do fancier noises, but this one is probably okay for this use case
-	// it generates a uniform random value in the range [-maxNoise, +maxNoise]
-	const noise = maxNoise * (Math.random() - 0.5) * 2;
-	return Math.round(noise * 100) / 100;
+export function noiseFactory(seed: number = 123) {
+	const prng = splitmix32(seed);
+
+	return (maxNoise: number) => {
+		// we could do fancier noises, but this one is probably okay for this use case
+		// it generates a uniform random value in the range [-maxNoise, +maxNoise]
+		const noise = maxNoise * (prng() - 0.5) * 2;
+		return Math.round(noise * 100) / 100;
+	};
 }
 
 function findHExtent(ptArrays: [number, number][][]) {
@@ -63,12 +69,14 @@ function getMaxVNoise(width: number) {
 	return (Math.tan(maxSlant) * width) / 4;
 }
 
-export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth) {
+export function generateHighlightPolygon(width: number, markerWidth: MarkerWidth, seed?: number) {
 	const cornerRadius = getCornerRadius(markerWidth);
 	const maxVNoise = getMaxVNoise(width);
 	const height = markerWidth + 2 * maxVNoise;
 	const halfHeight = height / 2;
-	const firstVOffsetSign = Math.round(Math.random()) * 2 - 1;
+
+	const noise = noiseFactory(seed);
+	const firstVOffsetSign = Math.round(noise(1)) * 2 - 1;
 
 	// first we figure out the points of the centerline
 	let clPts: [number, number][] = [
