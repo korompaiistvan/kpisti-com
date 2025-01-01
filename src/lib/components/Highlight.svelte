@@ -9,8 +9,8 @@
 		lineOffsetScale
 	} from '$lib/highlight-generation';
 
-	const highlightOpacity = 0.4;
-	const splodgeOpacity = 0.333;
+	const highlightOpacity = 0.9;
+	const splodgeOpacity = 0.3333;
 
 	const {
 		color,
@@ -75,6 +75,9 @@
 				fill="url(#highlight-gradient-{nonce})"
 				opacity={highlightOpacity}
 			/>
+		</g>
+		<g> </g>
+		<g transform="translate(0, {idx * markerWidth * lineOffsetScale})">
 			<use
 				href="#splodge-{nonce}"
 				transform="translate({hlPolygon.points[0][0] - cornerRadius}, {hlPolygon

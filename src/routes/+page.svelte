@@ -1,11 +1,18 @@
 <script lang="ts">
+	import { COLORS } from '$lib/color-palette';
 	import Highlighter from '$lib/components/Highlighter.svelte';
 </script>
 
 <div class="intro">
 	<h1>
 		I'm a
-		<Highlighter color="skyblue" text="data viz developer" markerWidth={24} fontSize={40} lines={2}>
+		<Highlighter
+			color={COLORS.blue}
+			text="data viz developer"
+			markerWidth={24}
+			fontSize={40}
+			lines={2}
+		>
 			data viz developer
 		</Highlighter> <br /> based in Vienna.
 	</h1>
@@ -16,13 +23,13 @@
 </div>
 
 <h2 id="wrote-header">
-	Things I <Highlighter color="skyblue" text="wrote" markerWidth={24} lines={1} fontSize={32}>
+	Things I <Highlighter color={COLORS.blue} text="wrote" markerWidth={24} lines={1} fontSize={32}>
 		wrote
 	</Highlighter>
 </h2>
 
 <h2 id="made-header">
-	Stuff I <Highlighter color="hotpink" text="made" markerWidth={24} fontSize={32} lines={1}
+	Stuff I <Highlighter color={COLORS.pink} text="made" markerWidth={24} fontSize={32} lines={1}
 		>made</Highlighter
 	>
 </h2>

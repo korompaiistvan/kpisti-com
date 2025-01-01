@@ -5,6 +5,7 @@
 	import { page } from '$app/stores';
 	import Highlighter from '$lib/components/Highlighter.svelte';
 	import type { Snippet } from 'svelte';
+	import { COLORS } from '$lib/color-palette';
 
 	const { children }: { children?: Snippet } = $props();
 
@@ -54,11 +55,11 @@
 	<nav>
 		<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
 		<div class="secondary-links">
-			{@render navlink('/', 'Home', '#931B5D')}
-			{@render navlink('/work', 'Work', '#37C0F9')}
-			{@render navlink('/blog', 'Blog', '#DBC2FA')}
-			{@render navlink('/about', 'About', '#F99437')}
-			{@render navlink('/contact', 'Contact', '#86A7FF')}
+			{@render navlink('/', 'Home', COLORS.mauve)}
+			{@render navlink('/work', 'Work', COLORS.teal)}
+			{@render navlink('/blog', 'Blog', COLORS.purple)}
+			{@render navlink('/about', 'About', COLORS.orange)}
+			{@render navlink('/contact', 'Contact', COLORS.blue)}
 		</div>
 	</nav>
 	<main>
