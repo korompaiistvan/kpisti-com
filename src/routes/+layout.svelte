@@ -4,13 +4,21 @@
 
 	import { page } from '$app/stores';
 	import Highlighter from '$lib/components/Highlighter.svelte';
-	import { setContext, type Snippet } from 'svelte';
+	import { onMount, setContext, type Snippet } from 'svelte';
 	import { COLORS } from '$lib/color-palette';
 
 	const { children }: { children?: Snippet } = $props();
 
 	let highlightSeed = $state(123);
 	setContext('highlightSeed', () => highlightSeed);
+
+	let remSize = $state(16);
+	onMount(() => {
+		// we assume the user does not change the default font size during their visit
+		remSize = parseInt(getComputedStyle(document.documentElement).fontSize.slice(0, 2));
+		console.log(remSize);
+	});
+	let backgroundImgUrl = $derived(`url("/background-img?size=${remSize * 2}")`);
 
 	function updateHighlightSeed() {
 		highlightSeed = Math.floor(Math.random() * 1000);
@@ -57,36 +65,42 @@
 		}
 	</style>
 {/snippet}
-
-<div class="container">
-	<nav>
-		<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
-		<div class="secondary-links">
-			{@render navlink('/', 'Home', COLORS.mauve)}
-			{@render navlink('/work', 'Work', COLORS.teal)}
-			{@render navlink('/blog', 'Blog', COLORS.purple)}
-			{@render navlink('/about', 'About', COLORS.orange)}
-			{@render navlink('/contact', 'Contact', COLORS.blue)}
-			<button type="button" onclick={updateHighlightSeed}>R</button>
-		</div>
-	</nav>
-	<main>
-		{#if children}
-			{@render children()}
-		{/if}
-	</main>
-	<footer>
-		<p>
-			There are no cookies on this website because I value your privacy. Here are a couple links
-			instead
-		</p>
-	</footer>
+<div class="wrapper" style:--background-image={backgroundImgUrl}>
+	<div class="container">
+		<nav>
+			<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
+			<div class="secondary-links">
+				{@render navlink('/', 'Home', COLORS.mauve)}
+				{@render navlink('/work', 'Work', COLORS.teal)}
+				{@render navlink('/blog', 'Blog', COLORS.purple)}
+				{@render navlink('/about', 'About', COLORS.orange)}
+				{@render navlink('/contact', 'Contact', COLORS.blue)}
+				<button type="button" onclick={updateHighlightSeed}>R</button>
+			</div>
+		</nav>
+		<main>
+			{#if children}
+				{@render children()}
+			{/if}
+		</main>
+		<footer>
+			<p>
+				There are no cookies on this website because I value your privacy. Here are a couple links
+				instead
+			</p>
+		</footer>
+	</div>
 </div>
 
 <style>
+	.wrapper {
+		margin: 2rem;
+		background-image: var(--background-image);
+	}
+
 	.container {
 		padding: 0.5rem;
-		margin: 0 auto;
+		margin: 2rem auto;
 		display: flex;
 		min-height: 100dvh;
 		flex-direction: column;

@@ -5,7 +5,8 @@
 		"vscode": {
 			"extensions": [
 				"esbenp.prettier-vscode",
-				"svelte.svelte-vscode"
+				"svelte.svelte-vscode",
+				"jock.svg"
 			]
 		}
 	}

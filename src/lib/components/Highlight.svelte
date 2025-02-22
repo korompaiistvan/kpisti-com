@@ -9,7 +9,7 @@
 		lineOffsetScale
 	} from '$lib/highlight-generation';
 
-	const highlightOpacity = 0.9;
+	const highlightOpacity = 0.5;
 	const splodgeOpacity = 0.3333;
 
 	const {
