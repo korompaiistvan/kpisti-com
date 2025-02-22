@@ -47,7 +47,7 @@
 			{text}
 			hoverOnly={isCurrent(href) !== 'page'}
 			markerWidth={24}
-			fontSize={20}
+			fontSize={16}
 			><span>
 				{text}
 			</span>
@@ -58,7 +58,6 @@
 			text-decoration: none;
 			color: unset;
 			font-family: 'DM Mono', monospace;
-			font-size: 1.25rem;
 			text-decoration: none;
 			text-transform: uppercase;
 			color: unset;
@@ -99,7 +98,7 @@
 	}
 
 	.container {
-		padding: 0.5rem;
+		padding: 1rem 0.5rem;
 		margin: 2rem auto;
 		display: flex;
 		min-height: 100dvh;
@@ -115,13 +114,14 @@
 		justify-content: space-between;
 		align-items: center;
 		padding-block: 0.25rem 1rem;
+		font-size: 1rem;
+		max-height: 3rem;
 	}
 
 	.name-home-link {
 		text-decoration: none;
 		color: unset;
 		font-family: 'DM Mono', monospace;
-		font-size: 1.25rem;
 		text-decoration: none;
 		text-transform: uppercase;
 		color: unset;
@@ -129,6 +129,7 @@
 
 	.secondary-links {
 		display: flex;
+		align-items: center;
 		gap: 1rem;
 	}
 

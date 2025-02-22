@@ -14,7 +14,7 @@
 			lines={2}
 		>
 			data viz developer
-		</Highlighter> <br /> based in Vienna.
+		</Highlighter> based in Vienna.
 	</h1>
 	<p class="intro--notes">
 		Follow me on Twitter, or LinkedIn or simply check out the awesome handmade dataviz I made with
@@ -36,24 +36,28 @@
 
 <style>
 	.intro {
-		min-height: 66vh;
+		margin-top: 3rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		gap: 1rem;
+		gap: 2rem;
 		padding-block: 2rem;
 	}
 
 	.intro--notes {
 		font-size: 1.25rem;
+		line-height: 2rem;
 	}
 
 	h1 {
-		font-size: 2.5rem;
+		font-size: 2rem;
+		line-height: 2em;
 	}
 
 	h2 {
 		font-size: 2rem;
+		line-height: 1;
+		margin-bottom: 1em;
 		text-transform: lowercase;
 	}
 </style>
