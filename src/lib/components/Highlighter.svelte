@@ -26,20 +26,34 @@
 		fontSize?: number;
 	} = $props();
 
-	const seed = getContext('highlightSeed') as () => number;
+	const seedContext = getContext('highlightSeed') as () => number;
+	type Seed = ReturnType<typeof seedContext>;
+	let seed = $state<Seed>(seedContext());
 
 	const width = estimateWidth(text, fontSize);
 
-	const urlParamString = $derived(
-		encodeObjectToSearchParams({
+	const makeBgImgUrl = (seedParam: Seed) => {
+		const urlParams = encodeObjectToSearchParams({
 			width,
 			color,
 			markerWidth,
 			lines,
-			seed: seed()
-		})
-	);
-	const backgroundImgUrl = $derived(`url("/highlight-img?${urlParamString}")`);
+			seed: seedParam
+		});
+		return `/highlight-img?${urlParams}`;
+	};
+
+	const backgroundImgUrl = $derived(`url("${makeBgImgUrl(seed)}")`);
+
+	$effect(() => {
+		// prefetch the background image before switching the seed
+		// this prevents bg image flashing when the user resets the highlights
+		const img = new Image();
+		img.onload = () => {
+			seed = seedContext();
+		};
+		img.src = makeBgImgUrl(seedContext());
+	});
 	const height = calculateHeight(markerWidth, lines, width);
 </script>
 
@@ -61,7 +75,7 @@
 		background-position: center center;
 		padding: var(--h-padding) 0.25em;
 		background-image: var(--background-image);
-		transition: background-image 1s ease-in-out;
+		transition: background-image 0.2s ease-in-out;
 	}
 
 	.hoveronly {

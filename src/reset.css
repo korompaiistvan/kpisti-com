@@ -63,3 +63,17 @@ video {
 body {
 	-webkit-font-smoothing: antialiased;
 }
+
+/* this is done with an expectation that appropriate, accessible styling will be added everywhere */
+button {
+	appearance: none;
+	display: block;
+	border: none;
+	outline: none;
+	background-color: transparent;
+}
+
+button:focus-visible {
+	outline: 1px solid black;
+	outline-offset: 1px;
+}

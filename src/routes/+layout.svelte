@@ -7,6 +7,8 @@
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import { COLORS } from '$lib/color-palette';
 
+	import rehighlightLogo from './rehighlight.svg?raw';
+
 	const { children }: { children?: Snippet } = $props();
 
 	let highlightSeed = $state(123);
@@ -16,7 +18,6 @@
 	onMount(() => {
 		// we assume the user does not change the default font size during their visit
 		remSize = parseInt(getComputedStyle(document.documentElement).fontSize.slice(0, 2));
-		console.log(remSize);
 	});
 	let backgroundImgUrl = $derived(`url("/background-img?size=${remSize * 2}")`);
 
@@ -74,7 +75,13 @@
 				{@render navlink('/blog', 'Blog', COLORS.purple)}
 				{@render navlink('/about', 'About', COLORS.orange)}
 				{@render navlink('/contact', 'Contact', COLORS.blue)}
-				<button type="button" onclick={updateHighlightSeed}>R</button>
+				<button
+					type="button"
+					onclick={updateHighlightSeed}
+					class="rehighlight-button"
+					title="Reset highlights"
+					aria-label="Refresh the text highlights on the page">{@html rehighlightLogo}</button
+				>
 			</div>
 		</nav>
 		<main>
@@ -131,6 +138,11 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+	}
+
+	.rehighlight-button:hover {
+		scale: 1.05;
+		transition: scale 0.2s ease-in-out;
 	}
 
 	footer {
