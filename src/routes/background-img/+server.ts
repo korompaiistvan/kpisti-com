@@ -6,11 +6,7 @@ export const GET: RequestHandler = ({ url }) => {
 	const queryParams = new URLSearchParams(url.search);
 	const gridSize = Number(queryParams.get('size')) || undefined;
 
-	const { body } = render(Background, {
-		props: {
-			gridSize
-		}
-	});
+	const { body } = render(Background);
 
 	return new Response(body, {
 		headers: {

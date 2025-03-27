@@ -1,9 +1,5 @@
 <script lang="ts">
-	const {
-		gridSize = 32
-	}: {
-		gridSize?: number;
-	} = $props();
+	const gridSize = 32;
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" width={4 * gridSize} height={4 * gridSize}>

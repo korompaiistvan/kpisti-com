@@ -14,13 +14,6 @@
 	let highlightSeed = $state(123);
 	setContext('highlightSeed', () => highlightSeed);
 
-	let remSize = $state(16);
-	onMount(() => {
-		// we assume the user does not change the default font size during their visit
-		remSize = parseInt(getComputedStyle(document.documentElement).fontSize.slice(0, 2));
-	});
-	let backgroundImgUrl = $derived(`url("/background-img?size=${remSize * 2}")`);
-
 	function updateHighlightSeed() {
 		highlightSeed = Math.floor(Math.random() * 1000);
 	}
@@ -65,7 +58,7 @@
 		}
 	</style>
 {/snippet}
-<div class="wrapper" style:--background-image={backgroundImgUrl}>
+<div class="wrapper">
 	<div class="container">
 		<nav>
 			<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
@@ -101,7 +94,8 @@
 <style>
 	.wrapper {
 		margin: 2rem;
-		background-image: var(--background-image);
+		background-image: url('/background-img');
+		background-size: calc(var(--bg-grid-size) * 4) calc(var(--bg-grid-size) * 4);
 	}
 
 	.container {
