@@ -5,7 +5,7 @@
 		description,
 		thumbnail,
 		canonicalUrl
-	}: { title: string; description: string; thumbnail: URL; canonicalUrl?: string } = $props();
+	}: { title: string; description: string; thumbnail?: URL; canonicalUrl?: string } = $props();
 	const urlWithoutParams = $derived(page.url.toString().split('?')[0]);
 </script>
 
@@ -16,5 +16,7 @@
 	<meta property="og:title" content={title} />
 	<meta property="og:url" content={urlWithoutParams} />
 	<meta property="og:description" content={description} />
-	<meta property="og:image" content={thumbnail.toString()} />
+	{#if thumbnail}
+		<meta property="og:image" content={thumbnail.toString()} />
+	{/if}
 </svelte:head>

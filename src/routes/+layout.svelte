@@ -99,7 +99,7 @@
 	}
 
 	.container {
-		padding: 1rem 0.5rem;
+		padding: 1rem 0;
 		margin: 2rem auto;
 		display: flex;
 		min-height: 100dvh;
@@ -108,6 +108,7 @@
 
 	main {
 		flex-grow: 1;
+		padding-top: calc(0.5 * var(--bg-grid-size));
 	}
 
 	nav {
