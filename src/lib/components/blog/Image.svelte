@@ -1,5 +1,13 @@
 <script lang="ts">
-	const { src, alt }: { src: string; alt: string } = $props();
+	import type { Picture } from 'vite-imagetools';
+	const { src, alt }: { src: Picture; alt: string } = $props();
 </script>
 
-<enhanced:img {src} {alt} />
+<enhanced:img class="blog-image" {src} {alt} />
+
+<style>
+	.blog-image {
+		width: 100%;
+		height: auto;
+	}
+</style>
