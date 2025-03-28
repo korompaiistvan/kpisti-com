@@ -83,10 +83,7 @@
 			{/if}
 		</main>
 		<footer>
-			<p>
-				There are no cookies on this website because I value your privacy. Here are a couple links
-				instead
-			</p>
+			<p>There will be a bunch of links here</p>
 		</footer>
 	</div>
 </div>
@@ -141,7 +138,8 @@
 	}
 
 	footer {
-		margin-top: auto;
+		margin-top: calc(2 * var(--bg-grid-size));
+		padding-block: 0.25rem 1rem;
 	}
 
 	@media (min-width: 640px) {
