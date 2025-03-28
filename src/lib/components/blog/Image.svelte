@@ -3,11 +3,14 @@
 	const { src, alt }: { src: Picture; alt: string } = $props();
 </script>
 
-<enhanced:img class="blog-image" {src} {alt} />
+<div class="img-wrapper">
+	<enhanced:img class="blog-image" {src} {alt} />
+</div>
 
 <style>
 	.blog-image {
 		width: 100%;
 		height: auto;
+		margin-block: var(--bg-grid-size);
 	}
 </style>

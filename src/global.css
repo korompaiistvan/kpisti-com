@@ -8,5 +8,9 @@
 * {
     font-family: 'DM Sans', sans-serif;
     font-variant: common-ligatures tabular-nums;
+    /* outline: 1px solid rgba(0, 255, 0, 0.5); */
+}
+
+body {
     color: #002654;
 }
