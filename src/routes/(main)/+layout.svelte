@@ -88,10 +88,32 @@
 </GlobalStyles>
 
 <style>
+	@property --bg-grid-size {
+		/* for some reason syntax: <length> did not seem to work */
+		syntax: '*';
+		inherits: false;
+		initial-value: 2rem;
+	}
+
+	* {
+		font-family: 'DM Sans', sans-serif;
+		font-variant: common-ligatures tabular-nums;
+		/* outline: 1px solid rgba(0, 255, 0, 0.5); */
+	}
+
 	.wrapper {
+		color: #033a7d;
 		margin: 2rem;
 		background-image: url('/background-img');
 		background-size: calc(var(--bg-grid-size) * 4) calc(var(--bg-grid-size) * 4);
+	}
+
+	.container {
+		padding: 1rem 0;
+		margin-block: 2rem;
+		display: flex;
+		min-height: 100dvh;
+		flex-direction: column;
 	}
 
 	main {
