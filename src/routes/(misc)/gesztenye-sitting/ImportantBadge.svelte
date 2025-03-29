@@ -10,6 +10,6 @@
 		border: 2px solid var(--accent-color);
 		font-weight: 700;
 		font-style: italic;
-		margin-inline: 1 em;
+		margin-inline: 1em;
 	}
 </style>

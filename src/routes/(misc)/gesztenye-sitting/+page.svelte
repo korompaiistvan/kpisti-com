@@ -8,13 +8,13 @@
 	<link href="https://fonts.googleapis.com/css2?family=Karla&family=Noto+Sans" rel="stylesheet" />
 </svelte:head>
 <main>
-	<enhanced:img
-		class="hero"
-		src={gesztenyePic}
-		alt="Portrait of the most beautiful vizsla baby on the planet. Unbiased opinion"
-	/>
 	<div class="container">
 		<ScrollToTop scrollToId="toc" />
+		<enhanced:img
+			class="hero"
+			src={gesztenyePic}
+			alt="Portrait of the most beautiful vizsla baby on the planet. Unbiased opinion"
+		/>
 		<h1>Sitting Gesztenye</h1>
 		<p>
 			For this length of time, your main job is to <em
