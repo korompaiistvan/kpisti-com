@@ -2,8 +2,9 @@
 	import gesztenyePic from './images/gesztenye.jpg?enhanced';
 	import ImportantBadge from './ImportantBadge.svelte';
 	import ScrollToTop from './ScrollToTop.svelte';
-	import dogPawLight from './dog-paw-light.svg?url';
-	import dogPawDark from './dog-paw-dark.svg?url';
+	import dogPawLight from './dog-paw-light.svg';
+	import dogPawDark from './dog-paw-dark.svg';
+	import Meta from '$lib/components/blog/Meta.svelte';
 </script>
 
 <svelte:head>
@@ -11,6 +12,11 @@
 	<link href={dogPawLight} rel="icon" media="(prefers-color-scheme: light)" />
 	<link href={dogPawDark} rel="icon" media="(prefers-color-scheme: dark)" />
 </svelte:head>
+<Meta
+	description="A short description on how to care for the world's cutest landshark"
+	title="Sitting Gesztenye"
+	thumbnail={gesztenyePic.img.src}
+/>
 <main>
 	<div class="container">
 		<h1>Sitting Gesztenye</h1>
