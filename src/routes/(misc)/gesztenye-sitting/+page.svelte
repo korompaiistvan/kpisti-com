@@ -2,10 +2,14 @@
 	import gesztenyePic from './images/gesztenye.jpg?enhanced';
 	import ImportantBadge from './ImportantBadge.svelte';
 	import ScrollToTop from './ScrollToTop.svelte';
+	import dogPawLight from './dog-paw-light.svg?url';
+	import dogPawDark from './dog-paw-dark.svg?url';
 </script>
 
 <svelte:head>
 	<link href="https://fonts.googleapis.com/css2?family=Karla&family=Noto+Sans" rel="stylesheet" />
+	<link href={dogPawLight} rel="icon" media="(prefers-color-scheme: light)" />
+	<link href={dogPawDark} rel="icon" media="(prefers-color-scheme: dark)" />
 </svelte:head>
 <main>
 	<div class="container">
@@ -136,7 +140,7 @@
 		<p>
 			Once he's done, you can take him upstairs. Since you're watching him only for a couple of
 			hours, he should not need to poo during this time. If you think he does, just take him for a
-			slightly longer, slow walk until the<a
+			slightly longer, slow walk until the <a
 				href="https://www.google.com/maps/dir/Kandlgasse+8,+Neubau+1070+Wien,+Austria/Bandgasse+%26+Westbahnstra%C3%9Fe,+1070+Wien/@48.2023536,16.3444264,18z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x476d07f2b92e61c7:0x487c5fd7deb2bda8!2m2!1d16.3452153!2d48.202898!1m5!1m1!1s0x476d078d2d2183f5:0x5a872d17523cc94e!2m2!1d16.3459722!2d48.2018093!3e2?entry=ttu&g_ep=EgoyMDI1MDMyNS4xIKXMDSoASAFQAw%3D%3D"
 			>
 				Bandgasse - Westbahnstraße corner</a
@@ -339,8 +343,11 @@
 </main>
 
 <style>
-	main {
+	:global(body) {
 		background-color: #f0f7f4;
+	}
+
+	main {
 		color: #5079a5;
 		padding-block: 2rem;
 		font-family: 'Noto Sans';
