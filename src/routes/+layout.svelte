@@ -1,10 +1,9 @@
 <script lang="ts">
-	import '../reset.css';
-	import '../global.css';
+	import { setContext, type Snippet } from 'svelte';
+	import { page } from '$app/state';
 
-	import { page } from '$app/stores';
 	import Highlighter from '$lib/components/Highlighter.svelte';
-	import { onMount, setContext, type Snippet } from 'svelte';
+	import GlobalStyles from '$lib/components/GlobalStyles.svelte';
 	import { COLORS } from '$lib/color-palette';
 
 	import rehighlightLogo from './rehighlight.svg?raw';
@@ -19,7 +18,7 @@
 	}
 
 	const isCurrent = (href: string) => {
-		return href === $page.url.pathname ? 'page' : false;
+		return href === page.url.pathname ? 'page' : false;
 	};
 </script>
 
@@ -58,49 +57,43 @@
 		}
 	</style>
 {/snippet}
-<div class="wrapper">
-	<div class="container">
-		<nav>
-			<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
-			<div class="secondary-links">
-				{@render navlink('/', 'Home', COLORS.mauve)}
-				{@render navlink('/work', 'Work', COLORS.teal)}
-				{@render navlink('/blog', 'Blog', COLORS.purple)}
-				{@render navlink('/about', 'About', COLORS.orange)}
-				{@render navlink('/contact', 'Contact', COLORS.blue)}
-				<button
-					type="button"
-					onclick={updateHighlightSeed}
-					class="rehighlight-button"
-					title="Reset highlights"
-					aria-label="Refresh the text highlights on the page">{@html rehighlightLogo}</button
-				>
-			</div>
-		</nav>
-		<main>
-			{#if children}
-				{@render children()}
-			{/if}
-		</main>
-		<footer>
-			<p>There will be a bunch of links here</p>
-		</footer>
+<GlobalStyles>
+	<div class="wrapper">
+		<div class="container">
+			<nav>
+				<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
+				<div class="secondary-links">
+					{@render navlink('/', 'Home', COLORS.mauve)}
+					{@render navlink('/work', 'Work', COLORS.teal)}
+					{@render navlink('/blog', 'Blog', COLORS.purple)}
+					{@render navlink('/about', 'About', COLORS.orange)}
+					{@render navlink('/contact', 'Contact', COLORS.blue)}
+					<button
+						type="button"
+						onclick={updateHighlightSeed}
+						class="rehighlight-button"
+						title="Reset highlights"
+						aria-label="Refresh the text highlights on the page">{@html rehighlightLogo}</button
+					>
+				</div>
+			</nav>
+			<main>
+				{#if children}
+					{@render children()}
+				{/if}
+			</main>
+			<footer>
+				<p>There will be a bunch of links here</p>
+			</footer>
+		</div>
 	</div>
-</div>
+</GlobalStyles>
 
 <style>
 	.wrapper {
 		margin: 2rem;
 		background-image: url('/background-img');
 		background-size: calc(var(--bg-grid-size) * 4) calc(var(--bg-grid-size) * 4);
-	}
-
-	.container {
-		padding: 1rem 0;
-		margin: 2rem auto;
-		display: flex;
-		min-height: 100dvh;
-		flex-direction: column;
 	}
 
 	main {
@@ -140,35 +133,5 @@
 	footer {
 		margin-top: calc(2 * var(--bg-grid-size));
 		padding-block: 0.25rem 1rem;
-	}
-
-	@media (min-width: 640px) {
-		.container {
-			max-width: 640px;
-		}
-	}
-
-	@media (min-width: 768px) {
-		.container {
-			max-width: 768px;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.container {
-			max-width: 1024px;
-		}
-	}
-
-	@media (min-width: 1280px) {
-		.container {
-			max-width: 1280px;
-		}
-	}
-
-	@media (min-width: 1536px) {
-		.container {
-			max-width: 1536px;
-		}
 	}
 </style>

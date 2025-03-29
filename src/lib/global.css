@@ -1,0 +1,54 @@
+@property --bg-grid-size {
+    /* for some reason syntax: <length> did not seem to work */
+    syntax: "*";
+    inherits: false;
+    initial-value: 2rem;
+}
+
+* {
+    font-family: 'DM Sans', sans-serif;
+    font-variant: common-ligatures tabular-nums;
+    /* outline: 1px solid rgba(0, 255, 0, 0.5); */
+}
+
+body {
+    color: #002654;
+}
+
+.container {
+    padding: 1rem 0;
+    margin: 2rem auto;
+    display: flex;
+    min-height: 100dvh;
+    flex-direction: column;
+}
+
+@media (min-width: 640px) {
+    .container {
+        max-width: 640px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 768px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1280px;
+    }
+}
+
+@media (min-width: 1536px) {
+    .container {
+        max-width: 1536px;
+    }
+}
