@@ -9,17 +9,17 @@
 </svelte:head>
 <main>
 	<div class="container">
+		<h1>Sitting Gesztenye</h1>
 		<ScrollToTop scrollToId="toc" />
 		<enhanced:img
 			class="hero"
 			src={gesztenyePic}
 			alt="Portrait of the most beautiful vizsla baby on the planet. Unbiased opinion"
 		/>
-		<h1>Sitting Gesztenye</h1>
 		<p>
-			For this length of time, your main job is to <em
+			In the span of these couple hours, we'd like to ask you to <em
 				>prevent house training accidents and supervise</em
-			> the doggo, making sure he does not get into unwanted shenanigans. You of course also have the
+			> the doggo, making sure he does not get into unwanted shenanigans. You, of course, also have the
 			option to for some bonding time with him, if you want.
 		</p>
 

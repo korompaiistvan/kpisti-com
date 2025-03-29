@@ -11,16 +11,20 @@
 		element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
 	};
 
-	let isIntersecting = $state(false);
+	let show = $state(false);
 
 	$effect(() => {
 		if (element === null) return;
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
-				isIntersecting = true;
+				show = false;
 				return;
 			}
-			isIntersecting = false;
+
+			const isAboveViewPort = element.getBoundingClientRect().bottom <= 0;
+			if (isAboveViewPort) {
+				show = true;
+			}
 		});
 
 		observer.observe(element);
@@ -35,8 +39,8 @@
 	onclick={clickHandler}
 	title="Scroll to top"
 	class="scroll-to-top"
-	class:hidden={isIntersecting}
-	aria-hidden={!isIntersecting}
+	class:hidden={!show}
+	aria-hidden={!show}
 >
 	{@html arrow}
 </button>
@@ -51,7 +55,7 @@
 		height: 3rem;
 		font-size: 1rem;
 		font-weight: 500;
-		position: sticky;
+		position: fixed;
 		top: 1.2rem;
 		right: 1.2rem;
 		float: right;
