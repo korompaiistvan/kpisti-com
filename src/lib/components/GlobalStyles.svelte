@@ -6,6 +6,4 @@
 	const { children }: { children: Snippet } = $props();
 </script>
 
-{#if children}
-	{@render children()}
-{/if}
+{@render children?.()}

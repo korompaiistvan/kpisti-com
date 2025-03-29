@@ -5,9 +5,7 @@
 </script>
 
 <div class="header">
-	{#if children}
-		{@render children()}
-	{/if}
+	{@render children?.()}
 </div>
 
 <style>

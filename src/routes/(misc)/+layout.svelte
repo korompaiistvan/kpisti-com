@@ -6,7 +6,5 @@
 </script>
 
 <GlobalStyles>
-	{#if children}
-		{@render children()}
-	{/if}
+	{@render children?.()}
 </GlobalStyles>

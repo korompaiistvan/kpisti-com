@@ -78,9 +78,7 @@
 				</div>
 			</nav>
 			<main>
-				{#if children}
-					{@render children()}
-				{/if}
+				{@render children?.()}
 			</main>
 			<footer>
 				<p>There will be a bunch of links here</p>

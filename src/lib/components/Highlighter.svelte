@@ -64,9 +64,7 @@
 	style:background-size="100% {height}px"
 	class:hoveronly={hoverOnly}
 >
-	{#if children}
-		{@render children()}
-	{/if}
+	{@render children?.()}
 </span>
 
 <style>
