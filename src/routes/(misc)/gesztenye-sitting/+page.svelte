@@ -15,7 +15,7 @@
 <Meta
 	description="A short description on how to care for the world's cutest landshark"
 	title="Sitting Gesztenye"
-	thumbnail={gesztenyePic.img.src}
+	thumbnail={`https://kpisti.com/${gesztenyePic.img.src}`}
 />
 <main>
 	<div class="container">
