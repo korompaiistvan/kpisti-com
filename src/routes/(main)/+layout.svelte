@@ -1,25 +1,18 @@
 <script lang="ts">
 	import { setContext, type Snippet } from 'svelte';
-	import { page } from '$app/state';
 
-	import Highlighter from '$lib/components/Highlighter.svelte';
 	import GlobalStyles from '$lib/components/GlobalStyles.svelte';
-	import { COLORS } from '$lib/color-palette';
 
-	import rehighlightLogo from './rehighlight.svg?raw';
+	import Header from './Header.svelte';
 
 	const { children }: { children?: Snippet } = $props();
 
 	let highlightSeed = $state(123);
 	setContext('highlightSeed', () => highlightSeed);
 
-	function updateHighlightSeed() {
-		highlightSeed = Math.floor(Math.random() * 1000);
+	function updateHighlightSeed(newSeed: number) {
+		highlightSeed = newSeed;
 	}
-
-	const isCurrent = (href: string) => {
-		return href === page.url.pathname ? 'page' : false;
-	};
 </script>
 
 <svelte:head>
@@ -33,50 +26,10 @@
 	/>
 </svelte:head>
 
-{#snippet navlink(href: string, text: string, color: string)}
-	<a {href} aria-current={isCurrent(href)} class="nav-link">
-		<Highlighter
-			{color}
-			{text}
-			hoverOnly={isCurrent(href) !== 'page'}
-			markerWidth={24}
-			fontSize={16}
-			><span>
-				{text}
-			</span>
-		</Highlighter>
-	</a>
-	<style>
-		.nav-link {
-			text-decoration: none;
-			color: unset;
-			font-family: 'DM Mono', monospace;
-			text-decoration: none;
-			text-transform: uppercase;
-			color: unset;
-		}
-	</style>
-{/snippet}
 <GlobalStyles>
 	<div class="wrapper">
 		<div class="container">
-			<nav>
-				<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
-				<div class="secondary-links">
-					{@render navlink('/', 'Home', COLORS.mauve)}
-					{@render navlink('/work', 'Work', COLORS.teal)}
-					{@render navlink('/blog', 'Blog', COLORS.purple)}
-					{@render navlink('/about', 'About', COLORS.orange)}
-					{@render navlink('/contact', 'Contact', COLORS.blue)}
-					<button
-						type="button"
-						onclick={updateHighlightSeed}
-						class="rehighlight-button"
-						title="Reset highlights"
-						aria-label="Refresh the text highlights on the page">{@html rehighlightLogo}</button
-					>
-				</div>
-			</nav>
+			<Header onHighlightSeedUpdate={updateHighlightSeed} />
 			<main>
 				{@render children?.()}
 			</main>
@@ -119,35 +72,6 @@
 	main {
 		flex-grow: 1;
 		padding-top: calc(0.5 * var(--bg-grid-size));
-	}
-
-	nav {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding-block: 0.25rem 1rem;
-		font-size: 1rem;
-		max-height: 3rem;
-	}
-
-	.name-home-link {
-		text-decoration: none;
-		color: unset;
-		font-family: 'DM Mono', monospace;
-		text-decoration: none;
-		text-transform: uppercase;
-		color: unset;
-	}
-
-	.secondary-links {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.rehighlight-button:hover {
-		scale: 1.05;
-		transition: scale 0.2s ease-in-out;
 	}
 
 	footer {
