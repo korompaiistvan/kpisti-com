@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Body from '$lib/components/blog/Body.svelte';
 	import Divider from '$lib/components/blog/Divider.svelte';
-	import Header from '$lib/components/blog/Header.svelte';
+	import Header from '$lib/components/Header.svelte';
 	import Image from '$lib/components/blog/Image.svelte';
-	import Meta from '$lib/components/blog/Meta.svelte';
+	import Meta from '$lib/components/Meta.svelte';
 	import Title from '$lib/components/blog/Title.svelte';
 	import overheadPic from './images/overhead.png?enhanced';
 	// @ts-expect-error the url params are not currently recognized by ts for nehanced img in svelte

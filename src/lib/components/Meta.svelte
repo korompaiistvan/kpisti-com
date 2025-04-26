@@ -6,6 +6,7 @@
 		thumbnail,
 		canonicalUrl
 	}: { title: string; description: string; thumbnail?: string; canonicalUrl?: string } = $props();
+	// TODO: add default thumbnail image here
 	const urlWithoutParams = $derived(page.url.toString().split('?')[0]);
 </script>
 

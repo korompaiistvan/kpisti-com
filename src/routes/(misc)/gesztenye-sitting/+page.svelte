@@ -4,7 +4,7 @@
 	import ScrollToTop from './ScrollToTop.svelte';
 	import dogPawLight from './dog-paw-light.svg';
 	import dogPawDark from './dog-paw-dark.svg';
-	import Meta from '$lib/components/blog/Meta.svelte';
+	import Meta from '$lib/components/Meta.svelte';
 </script>
 
 <svelte:head>
