@@ -4,6 +4,7 @@
 	import GlobalStyles from '$lib/components/GlobalStyles.svelte';
 
 	import Header from './Header.svelte';
+	import Footer from './Footer.svelte';
 
 	const { children }: { children?: Snippet } = $props();
 
@@ -33,9 +34,7 @@
 			<main>
 				{@render children?.()}
 			</main>
-			<footer>
-				<p>There will be a bunch of links here</p>
-			</footer>
+			<Footer />
 		</div>
 	</div>
 </GlobalStyles>
@@ -56,26 +55,22 @@
 
 	.wrapper {
 		color: #033a7d;
-		margin: 2rem;
 		background-image: url('/background-img');
 		background-size: calc(var(--bg-grid-size) * 4) calc(var(--bg-grid-size) * 4);
+		padding: calc(var(--bg-grid-size) * 0.5);
+		@media (min-width: 768px) {
+			margin: 2rem;
+		}
+		min-height: 100dvh;
 	}
 
 	.container {
-		padding: 1rem 0;
-		margin-block: 2rem;
 		display: flex;
-		min-height: 100dvh;
 		flex-direction: column;
 	}
 
 	main {
 		flex-grow: 1;
 		padding-top: calc(0.5 * var(--bg-grid-size));
-	}
-
-	footer {
-		margin-top: calc(2 * var(--bg-grid-size));
-		padding-block: 0.25rem 1rem;
 	}
 </style>
