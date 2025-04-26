@@ -10,6 +10,7 @@
 	.blog-title {
 		font-size: xx-large;
 		font-weight: 500;
-		line-height: calc(2 * var(--bg-grid-size));
+		line-height: 1.5;
+		margin-bottom: 0.5em;
 	}
 </style>
