@@ -11,14 +11,12 @@
 	import digitalProtoPic from './images/digital-prototype.png?enhanced';
 	import hunchbacksPic from './images/teamwork.jpg?enhanced';
 	import partsPic from './images/lots-of-parts.jpg?enhanced';
-	const title = "What's a handmade data object anyways?";
-	const canonicalUrl = 'https://nightingaledvs.com/whats-a-handmade-data-object-anyway/';
-	const description = `This post tells the story of our most recent collaborative experimentation with what we’ve seen referred to as “analog data art” or “handmade data objects” — read on to find out how we ended up hunched over old watch parts to create this physical data visualization`;
+	import meta from './meta';
 </script>
 
 <Header>
-	<Meta {title} {description} {canonicalUrl} thumbnail={overheadPic.img.src} />
-	<Title {title} />
+	<Meta {...meta} thumbnail={meta.thumbnail.img.src} />
+	<Title title={meta.title} />
 	<p class="collab">
 		Collaboration with <span class="author-name">Tamás Varga</span> &
 		<span class="author-name">Júlia Borsi</span>
