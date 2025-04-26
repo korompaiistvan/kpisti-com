@@ -10,6 +10,12 @@
 	};
 
 	const { onHighlightSeedUpdate }: { onHighlightSeedUpdate: (newSeed: number) => void } = $props();
+
+	let mobileMenuOpen = $state(false);
+
+	const toggleMobileMenuOpen = () => {
+		mobileMenuOpen = !mobileMenuOpen;
+	};
 </script>
 
 {#snippet navlink(href: string, text: string, color: string)}
@@ -40,17 +46,31 @@
 <nav>
 	<a class="name-home-link" href="/" aria-current={isCurrent('/')}>István Korompai </a>
 	<div class="secondary-links">
-		{@render navlink('/', 'Home', COLORS.mauve)}
-		{@render navlink('/work', 'Work', COLORS.teal)}
-		{@render navlink('/blog', 'Blog', COLORS.purple)}
-		{@render navlink('/about', 'About', COLORS.orange)}
-		{@render navlink('/contact', 'Contact', COLORS.blue)}
+		<div class="secondary-nav-links mobile-menu" data-open={mobileMenuOpen}>
+			<button
+				type="button"
+				aria-label="Close Menu"
+				class="mobile-menu-close-btn"
+				onclick={toggleMobileMenuOpen}>X</button
+			>
+			{@render navlink('/', 'Home', COLORS.mauve)}
+			{@render navlink('/work', 'Work', COLORS.teal)}
+			{@render navlink('/blog', 'Blog', COLORS.purple)}
+			{@render navlink('/about', 'About', COLORS.orange)}
+			{@render navlink('/contact', 'Contact', COLORS.blue)}
+		</div>
 		<button
 			type="button"
 			onclick={() => onHighlightSeedUpdate(Math.floor(Math.random() * 1000))}
 			class="rehighlight-button"
 			title="Reset highlights"
 			aria-label="Refresh the text highlights on the page">{@html rehighlightLogo}</button
+		>
+		<button
+			type="button"
+			aria-label="Open Nav Menu"
+			class="mobile-menu-open-btn"
+			onclick={toggleMobileMenuOpen}>O</button
 		>
 	</div>
 </nav>
@@ -83,5 +103,50 @@
 	.rehighlight-button:hover {
 		scale: 1.05;
 		transition: scale 0.2s ease-in-out;
+	}
+
+	.mobile-menu-close-btn {
+		position: absolute;
+		right: var(--bg-grid-size);
+		top: var(--bg-grid-size);
+	}
+
+	.mobile-menu {
+		display: grid;
+		place-content: center;
+		gap: var(--bg-grid-size);
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		transition: transform 0.5s ease-in-out;
+		background-color: white;
+		padding: calc(0.25 * var(--bg-grid-size));
+		&[data-open='true'] {
+			transform: translateY(0);
+		}
+
+		&[data-open='false'] {
+			transform: translateY(-100%);
+		}
+	}
+
+	@media (min-width: 768px) {
+		.mobile-menu-open-btn {
+			display: none;
+		}
+
+		.mobile-menu-close-btn {
+			display: none;
+		}
+
+		.mobile-menu {
+			display: block;
+			position: unset;
+			width: auto;
+			background-color: unset;
+			&[data-open] {
+				transform: unset;
+			}
+		}
 	}
 </style>
