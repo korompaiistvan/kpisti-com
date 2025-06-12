@@ -1,10 +1,31 @@
-<script>
+<script lang="ts">
 	import gesztenyePic from './images/gesztenye.jpg?enhanced';
 	import ImportantBadge from './ImportantBadge.svelte';
 	import ScrollToTop from './ScrollToTop.svelte';
 	import dogPawLight from './dog-paw-light.svg';
 	import dogPawDark from './dog-paw-dark.svg';
 	import Meta from '$lib/components/Meta.svelte';
+	import PeriodSwitch from './PeriodSwitch.svelte';
+	import type { PeriodOption } from './PeriodSwitch.svelte';
+
+	let period: PeriodOption = $state('hours'); // Default value for the period switch
+
+	// persist the period value in local storage
+
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			const storedPeriod = localStorage.getItem('gesztenye-sitting-period');
+			if (storedPeriod) {
+				period = storedPeriod as PeriodOption;
+			}
+		}
+	});
+
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			localStorage.setItem('gesztenye-sitting-period', period);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -26,12 +47,23 @@
 			src={gesztenyePic}
 			alt="Portrait of the most beautiful vizsla baby on the planet. Unbiased opinion"
 		/>
-		<p>
-			In the span of these couple hours, we'd like to ask you to <em
-				>prevent house training accidents and supervise</em
-			> the doggo, making sure he does not get into unwanted shenanigans. You, of course, also have the
-			option to for some bonding time with him, if you want.
-		</p>
+		<PeriodSwitch bind:value={period} />
+		{#if period === 'hours'}
+			<p>
+				Thank you for taking care of our little landshark, Gesztenye, for a couple of hours. We hope
+				you will enjoy the time spent with him.
+			</p>
+		{:else if period === 'day'}
+			<p>
+				Thank you for taking care of our little landshark, Gesztenye, for a day or two. We hope you
+				will enjoy the time spent with him.
+			</p>
+		{:else if period === 'days'}
+			<p>
+				Thank you for taking care of our little landshark, Gesztenye, for multiple days. We hope you
+				will enjoy the time spent with him.
+			</p>
+		{/if}
 
 		<p>
 			Below is a bunch of info, the most important ones to read have been marked. The rest are
@@ -50,6 +82,12 @@
 					<a href="#supervision">Supervision</a>
 					<ImportantBadge />
 				</li>
+				{#if period !== 'hours'}
+					<li>
+						<a href="#daily-schedule">Daily Schedule</a>
+						<ImportantBadge />
+					</li>
+				{/if}
 				<li>
 					<a href="#potty-breaks">Potty Breaks</a>
 				</li>
@@ -98,9 +136,10 @@
 			<li>training</li>
 		</ul>
 		<p>
-			Unfortunately, <em> there isn't an easy tell</em> for when he has to go - at least not one we noticed.
-			The following things might each point to him wanting to go outside for a pee. They are listed in
-			increasing order of obviousness
+			Lately he's been more reliable in telling us when he needs to go out, but <em>
+				he does not yet have a very clear tell</em
+			>. The following things might each point to him wanting to go outside for a pee. They are
+			listed in increasing order of obviousness
 		</p>
 		<ul>
 			<li>sniffs the floor a lot</li>
@@ -110,7 +149,7 @@
 
 		<p>
 			He regularly does the first two, so if you've recently been on a potty break (e.g. less than
-			20 mins ago), you can fairly safely ignore it).
+			20 mins ago), you can fairly safely ignore it.
 		</p>
 
 		<h2 id="supervision">Supervision</h2>
@@ -118,18 +157,13 @@
 		<p>
 			The other part of the task you so graciously accepted revolves around managing <em
 				>his safety and manners</em
-			>. Managing safety revolves around making sure he does chew on wires or plants. His manners on
+			>. Managing safety simply means making sure he does chew on wires or plants. His manners on
 			the other hand are a longer list of things he is not allowed to do.
 		</p>
 
 		<p>Most important parts of home manners:</p>
 		<ul>
 			<li>not allowed on any furniture</li>
-			<li>may not sleep outside his crate</li>
-			<li>
-				yes, in case he does fall asleep somewhere you have to wake him up and put him in his crate,
-				as soon as possible
-			</li>
 			<li>no barking</li>
 			<li>no jumping up on people</li>
 			<li>no biting hands, furniture, clothing, hair</li>
@@ -138,123 +172,165 @@
 
 		<p>
 			Potty breaks are very short and do not require you to actually walk the dog. When you take him
-			downstairs, there is a small rectangle of wider sidewalk to the right after exiting. This is
-			his potty area, so stand in that area until he wees. When he does, mark the behaviour with a
-			"Yes", and once finished, give him a small treat.
+			downstairs, we usually wait with him just outside of the entrance for him to go in a little
+			potty area. When he does, mark the behaviour with a "Yes", and once finished, give him a small
+			treat. Once he's done, you can take him upstairs immediately if you'd like.
 		</p>
 
 		<p>
-			Once he's done, you can take him upstairs. Since you're watching him only for a couple of
-			hours, he should not need to poo during this time. If you think he does, just take him for a
-			slightly longer, slow walk until the <a
-				href="https://www.google.com/maps/dir/Kandlgasse+8,+Neubau+1070+Wien,+Austria/Bandgasse+%26+Westbahnstra%C3%9Fe,+1070+Wien/@48.2023536,16.3444264,18z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x476d07f2b92e61c7:0x487c5fd7deb2bda8!2m2!1d16.3452153!2d48.202898!1m5!1m1!1s0x476d078d2d2183f5:0x5a872d17523cc94e!2m2!1d16.3459722!2d48.2018093!3e2?entry=ttu&g_ep=EgoyMDI1MDMyNS4xIKXMDSoASAFQAw%3D%3D"
-			>
-				Bandgasse - Westbahnstraße corner</a
-			> and back. That is his poo route, if he does not do it there, he probably does not need to.
+			{#if period === 'hours'}
+				Since you're watching him only for a couple of hours, he should not need to poo during this
+				time. If you think he does, just take him for a slightly longer, slow walk around the block,
+				and he will most likely do it in a couple minutes of walking.
+			{:else}
+				He poops around 2-5 times a day, and usually within the first 5-10 minutes of the walk - to
+				see when his usual poop times are just go to the <a href="daily-schedule"
+					>daily schedule section</a
+				>. If he does not do it during this time, you do not need to force it, he will do it later.
+			{/if}
 		</p>
 		<h2 id="crating">Crating and Sleep</h2>
 
 		<p>
-			Since he's a puppy, he sleeps <em>15-20 hours a day</em>. This basically means that for every
-			hour he's awake and active, he can spend two sleeping. Unfortunately, <i>because</i> he's a puppy,
-			he does not settle into sleep on his own, if there are other, more exciting things to do. So, you
-			have two choices for his naps: either you comfortably settle onto the sofa, and ignore him, waiting
-			for him to go into his crate on his own, or you send him in. Once he's inside you're free to praise
-			him for it and close the door.
+			Since he's still a young teenager, he sleeps <em>15-20 hours a day</em>. This basically means
+			that for every hour he's awake and active, he can spend two sleeping. Unfortunately,
+			<i>because</i> he's a puppy, he does not always settle into sleep on his own, if there are other,
+			more exciting things to do. So, you have two choices for his naps: either you comfortably settle
+			onto the sofa, and ignore him, waiting for him to go into his bed/crate on his own, or you send
+			him in. Once he's inside you're free to praise him for it and close the crate door - when crating.
 		</p>
 
 		<p>
-			Sending him in works by grabbing two treats from the go-bag, standing next to the crate,
-			pointing to it and giving out the "Place" command. If it works, he will enter the crate and
-			sit, and you should reward him with one of the treats. Then, as you're still crouching, close
-			the crate door, and once closed, praise and reward again.
-		</p>
-
-		<p>
-			He will look at with you sad puppy eyes when you do this, but be strong and ignore him. I
-			promise you he does not hate you for it, he needs his sleep.
+			In case you have the crate available, you can crate him whenever you'd like. Thsi works by
+			standing next to the crate - maybe with a treat - and using the command "Place" to indicate
+			that he should go into the crate. If he does not immediately go in, you can lead him in by his
+			collar. He will look at with you sad puppy eyes when you do this, but be strong and ignore
+			him. I promise you he does not hate you for it, he needs his sleep.
 		</p>
 
 		<p>
 			If he ever gets restless in the crate, and whines or barks, interrupt him with a "No"
 			immediately, even if you're in a completely different part of the flat. For example, Pisti
-			often says "no", as he's on the toilet, while Gesztenye is in the crate and the dog starts
-			whining.
+			often says "no", as he's on the toilet, while Gesztenye is in the crate and starts whining.
 		</p>
 
 		<p>
-			In case he enters the crate on its own, it means he's calm and would like some rest. Do not
-			bother him in the crate, that's his space for me time. If you want, you can close the door on
-			him, even if he's entered on his own.
+			In case he enters the crate/bed on its own, it means he's calm and would like some rest. Do
+			not bother him in there, that's his space for some "me time". If you want, you can close the
+			door on him, even if he's entered on his own.
 		</p>
+
 		<h2 id="water">Water</h2>
 
 		<p>
 			To manage his need for potty, it's advisable to not let him drink too much at once, as he can
-			overdrink because of excitement and then he has to pee a lot. Make sure to have about <em>
-				half a cup to a cup water
-			</em> in his bowl, but not more. If he drinks it, only refill it after the next potty break.
+			overdrink because of excitement or being hot and then he has to pee a lot. Make sure to have
+			about <em> a cup water </em> in his bowl, but not more. If he drinks it, only refill it after the
+			next potty break.
+		</p>
+
+		<p>
+			On walks, or in the park, he wants to drink a lot to cool down, but he really will drink
+			liters if allowed. Instead we usually wet his ears, hind legs and shoulders to cool him down,
+			and only give him a little bit to drink from his foldable water bowl.
 		</p>
 		<h2 id="play">Play</h2>
 
 		<p>
 			In case you want to play with him, the best game for tiring him out is <em>tug-of-war</em>. He
-			has a rope, usually collected into his crate, so grab it from there. If he's not immediately
-			interested, you can call him in a playful voice and wiggle the rope on the ground like a dying
-			fish. This usually gets him interested enough to go for it, after which you can start playing
-			tug with him.
+			has a rope he loves. If he's not immediately interested, you can call him in a playful voice
+			and wiggle the rope on the ground like a dying fish. This usually gets him interested enough
+			to go for it, after which you can start playing tug with him.
 		</p>
 
 		<p>
 			At some point, you'll start noticing him losing interest, so you can try and upping the ante.
-			Sometimes though he is just tired, or you have had enough. If you either of you want to stop
-			playing, you should interrupt the play by asking him for a "Sit" and taking away the toy into
-			your hands. Once he's seated and has his gaze on you, you can put the toy in the front of him,
-			say "Brake" and then start doing your own thing. Once you decided to interrupt the play, do
-			not let him invite you back in, he will start <em>playing on his own</em>.
+			If either of you want to stop playing, you should interrupt the play by asking him to "Drop
+			it" and to "Sit" and taking away the toy into your hands. Once he's seated and has his gaze on
+			you, you can put the toy in the front of him, say "Break" and then start doing your own thing.
+			Once you decided to interrupt the play, do not let him invite you back in, he will start <em
+				>playing on his own</em
+			>.
 		</p>
 		<h2 id="schedule">Schedule Recommendation</h2>
 
 		<p>
 			He will be fed when we hand him over to you, so you do not need to worry about feeding him. He
 			will also most likely have just taken a walk. We will have about 10-15 minutes of overlap
-			before we leave him with you. During this time, we'll calmly sit with you on the sofa, have a
-			coffee and a chat, until he calms down a bit. After this, we will calmly put on our stuff and
-			leave the dog with you.
+			before we leave him with you. During this time, we'll calmly sit with you, have a chat, until
+			he calms down a bit. After this, we will calmly put on our stuff and leave the dog with you.
 		</p>
 
 		<p>
-			He will be a bit excited after this, so it's best if you call him to yourself, and if he's
-			relatively calm, have a small bonding pet session. If he whines or barks, do not pet him, just
-			interrupt it with a calm, confident "No". Otherwise, if you think he needs to expell some
+			He will be a bit excited/anxious after this, so it's best if you call him to yourself, and if
+			he's relatively calm, have a small bonding pet session. If he whines or barks, do not pet him,
+			just interrupt it with a calm, confident "No". Otherwise, if you think he needs to expell some
 			energy, you can try to play with him a little. In any case, 20-30 minutes after we leave, you
-			should take him for a potty break.
+			should take him for a potty break - just in case.
 		</p>
 
 		<p>
 			Once done with the potty, if you want to bond, you can play, wrestle or pet him for 5-10
 			minutes. After this, you should probably crate him and allow him to sleep for at least 1.5-2
-			hours. Remember by this point he's been awake for about an hour, so the downtime is welcome.
-			During this time, feel free to move around the flat, watch some TV, read or use the office. In
-			general, make yourself at home.
+			hours. Remember by this point he's been awake for a couple hours, so the downtime is welcome.
 		</p>
 
-		<p>
-			After this nap, pull him out of the crate, go for a potty break again. Once upstairs, let him
-			play on his own outside the crate for 30 minutes, and he will usually enter the crate on his
-			own and settle. By this point there should not be a lot of time left until we get back home,
-			so you should do some mixture of the following activites: - potty breaks as needed - give him
-			a Kong (see below) - playing together - free roam time for hime - pets, there are never enough
-			pets
-		</p>
+		{#if period === 'hours'}
+			<p>
+				After this nap, pull him out of the crate, go for a potty break again. Once upstairs, let
+				him play on his own outside the crate for 30 minutes, and he will usually enter the crate on
+				his own and settle. By this point there should not be a lot of time left until we get back
+				home, so you should do some mixture of the following activites: - potty breaks as needed -
+				give him a Kong (see below) - playing together - free roam time for hime - pets, there are
+				never enough pets
+			</p>
+		{/if}
+
+		{#if period !== 'hours'}
+			<h2 id="daily-schedule">Daily Schedule</h2>
+
+			<p>
+				His daily schedule is not super tight and is mostly split between low-movement and
+				high-movement days.
+			</p>
+			<h3>Low movement day</h3>
+			<ul>
+				<li>We wake up around 8:30-9:00</li>
+				<li>Quick potty break for peeing only</li>
+				<li>We have breakfast</li>
+				<li>He has breakfast between 9:00-10:00 paired with a short training session</li>
+				<li>Luca leaves, Pisti starts work or hangs out in the living room</li>
+				<li>Gesztenye walks around and naps until 10:30-12:00</li>
+				<li>Potty break with poop walk and a café visit around</li>
+				<li>Naps, or individual play, sometimes a chew treat (bunny ears, bovine scalp)</li>
+				<li>
+					Afternoon playtime/training session/scent work. In general some mental stimulation for him
+				</li>
+				<li>Another potty break and walk around 15:00-16:00 - sometimes he poops here</li>
+				<li>Nap until 18:00 when Luca arrives</li>
+				<li>Potty-break around Luca's arrival</li>
+				<li>Dinner between 19:00 and 21:00 - sometimes later if we are out</li>
+				<li>Cuddles/brushing/bonding time</li>
+				<li>He settles in his bed/crate around 22:00</li>
+				<li>Last potty break just before our bedtime, usually around 23:00 - 23:30</li>
+			</ul>
+
+			<h3>High movement day</h3>
+			<p>
+				A high movement day follows the same feeding and sleep schedule but - some of - the potty
+				breaks and afternoon training session are replaced by a hike, or dog park or any activity
+				that includes physical exercise for him
+			</p>
+		{/if}
 		<h2 id="kongs">Kongs</h2>
 		<p>
-			if he isn't tired at the moment, but you want some time for yourself, without needing to focus
-			on him, there is a frozen Kong toy in the bottom drawer of the freezer. Lure him into the
-			crate with it and close the door on him. He will be focused on getting the treats out of that
-			thing, which will provide him some stimulation, allowing him to settle afterwards. This gives
-			you about an hour to do anything, even if he does not fall asleep. If he does fall asleep
-			afterwards, he will be out for a while.
+			If he isn't tired at the moment, but you want some time for yourself, without needing to focus
+			on him, you'll have access to a frozen Kong toy, either because you are at our place, or we
+			brought one to you. Lure him into the crate with it (if you have the crate) and close the door
+			on him. He will be focused on getting the treats out of that thing, which will provide him
+			some stimulation, allowing him to settle afterwards. This gives you about an hour to do
+			anything, even if he does not fall asleep. If he does fall asleep afterwards, he will be out
+			for a while.
 		</p>
 
 		<h2 id="potty-accidents">Potty Accidents</h2>
@@ -280,9 +356,9 @@
 			</li>
 			<li>Once upstairs, prep to clean up the rest of the pee.</li>
 			<li>
-				There is a mason jar in the bathroom, with a greenish clear liquid. That is a pee cleaning
-				solution. Take two microfiber cloths from the bath, dip one in the cleaning liquid, leave
-				the other one dry.
+				There is a spray bottle we'll give you, with a greenish clear liquid. That is a pee cleaning
+				solution. Take two microfiber cloths, spray one with the cleaning liquid, leave the other
+				one dry.
 			</li>
 			<li>Go to the pee spot, with the two cloths.</li>
 			<li>
@@ -295,7 +371,7 @@
 				one.
 			</li>
 			<li>Put the dirty training pad in the trash</li>
-			<li>Rinse and wring the two cleaning cloths, placing them on the side of the bath to dry.</li>
+			<li>Rinse and wring the two cleaning cloths, placing them out to dry.</li>
 			<li>
 				Final step: be proud of the quick solution and relax for a while. Now at least he won't have
 				to pee for a while.
@@ -305,10 +381,12 @@
 		<h2 id="motivation">Motivating Different Behaviors</h2>
 
 		<p>
-			The go-bag has a good amount of treats in it. For training reasons, we would like to kindly
-			ask you to not feed him from those, unless the situation heavily calls for it. Such cases are
-			when you went to the café and need to manage his attention, or you need to place him in his
-			crate and he is not willing.
+			The go-bag has a good amount of treats in it, feel free to use them to motivate him to do
+			things. The most important thing to remember is that he is a <em>food motivated</em> dog, so he
+			will do things for treats. If you want him to do something, just show him the treat, and he will
+			usually do it. If he does not, you can try to get his attention by wiggling the treat in front
+			of his nose, and then ask him to do the thing you want. If he does it, praise him enthusiastically
+			and give him the treat.
 		</p>
 
 		<p>
@@ -332,34 +410,50 @@
 			walk. The only things you should need from there are: - poo bags - treats - human hygiene
 			products (tissues, wet wipes, disinfectant gel)
 		</p>
-		<p>
-			There are a few other items too, but you shouldn't use those for this short a sitting: - high
-			value treats - ball - long line
-		</p>
-		<h2 id="commands">Commands</h2>
 
+		<h2 id="commands">Commands</h2>
 		<p>
-			The only commands you should need for this short time are: - "Sit" - put yo' butt on the
-			ground - "Place" and point to crate - go to the crate. currently, usually only works with
-			treats - "Stay" - best to give when he's seated, he will try to maintain the sit. Not awfully
-			stable at the moment, distraction can easily make it fall apart. - "Break" - you can stop
-			staying, go do whatever you want now
+			Here is the repertoire of commands he knows, and the ones we use most often. You can also use
+			them to get him to do things, or to stop doing things.
 		</p>
+		<p>Essentials</p>
+		<ul>
+			<li>"Sit" - put yo' butt on the ground</li>
+			<li>"Down" - lie down on the ground</li>
+			<li>"Place" - go to your crate/bed</li>
+			<li>"Stay" + show him your open palm - stay where you are</li>
+			<li>"Drop it" - let go of the thing in your mouth</li>
+			<li>"Leave it" - do not touch that thing</li>
+			<li>"Komm" (the only german one) - come to me</li>
+			<li>"No" - stop doing that thing</li>
+			<li>"Yes" - you did the thing I wanted</li>
+			<li>"Break" - you can do whatever you want now</li>
+			<li>
+				"Heel" + open palm by your side - walk by my side (does not work great outside yet,
+				especially if he's amped)
+			</li>
+		</ul>
+		<p>Fun things</p>
+		<ul>
+			<li>"Nose" + reach with two fingers - touch your nose to my fingers</li>
+			<li>"Spin" + show the direction - turn around</li>
+		</ul>
 	</div>
 </main>
 
 <style>
 	:global(body) {
 		background-color: #f0f7f4;
+		--primary-color: #5079a5;
+		--accent-color: #dd7373;
 	}
 
 	main {
-		color: #5079a5;
+		color: var(--primary-color);
 		padding-block: 2rem;
 		font-family: 'Noto Sans';
 		padding-inline: 1rem;
 		line-height: 1.6;
-		--accent-color: #dd7373;
 	}
 
 	.container {
@@ -367,7 +461,8 @@
 	}
 
 	h1,
-	h2 {
+	h2,
+	h3 {
 		font-style: italic;
 		font-family: Karla;
 		margin-bottom: 0.5em;
@@ -382,6 +477,11 @@
 	h2 {
 		font-size: 2rem;
 		font-weight: 500;
+	}
+
+	h3 {
+		font-size: 1.5rem;
+		font-weight: 400;
 	}
 
 	p {
