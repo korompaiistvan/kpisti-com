@@ -24,6 +24,16 @@
 		margin-bottom: 1em;
 	}
 
+	.body > :global(h3) {
+		font-size: large;
+		margin-bottom: 1em;
+	}
+
+	.body :global(figcaption) {
+		font-size: small;
+		margin-bottom: 1em;
+	}
+
 	.body :global(a) {
 		color: inherit;
 		font-style: italic;
