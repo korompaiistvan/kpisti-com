@@ -115,3 +115,23 @@ export function generateRandomSPD(resolution: number = 5, seed: number = 123) {
 	}
 	return spd;
 }
+
+export function getOptimalColorSolid(resolution = 1) {
+	const colors = [];
+
+	let pulse: SPD;
+	for (
+		let startFreq = VISIBLE_RANGE[0];
+		startFreq <= VISIBLE_RANGE[1] - resolution;
+		startFreq += resolution
+	) {
+		for (let endFreq = startFreq + resolution; endFreq <= VISIBLE_RANGE[1]; endFreq += resolution) {
+			pulse = generatePulse(startFreq, endFreq, 'valley', resolution);
+			colors.push(XYZFromSPD(pulse));
+			pulse = generatePulse(startFreq, endFreq, 'mountain', resolution);
+			colors.push(XYZFromSPD(pulse));
+		}
+	}
+
+	return colors;
+}

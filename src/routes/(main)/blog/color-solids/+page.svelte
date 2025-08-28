@@ -5,6 +5,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import Meta from '$lib/components/Meta.svelte';
 	import ColorMatchingFunctions from './ColorMatchingFunctions.svelte';
+	import SolidVizCanvas from './components/SolidVizCanvas.svelte';
 	import meta from './meta';
 	import SpdToColor from './SPDToColor.svelte';
 	import Spectrum from './Spectrum.svelte';
@@ -103,6 +104,9 @@
 	</p>
 
 	<SpdToColor />
+	<h2>The Solids</h2>
+
+	<SolidVizCanvas />
 </Body>
 
 <style>
