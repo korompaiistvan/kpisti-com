@@ -4,6 +4,7 @@
 	import { generateRandomSPD, XYZFromSPD } from './utils/color';
 
 	const resolution = 30;
+	const maxBubbleSize = 48;
 	let spd = $state(generateRandomSPD(resolution, 123));
 
 	const [X, Y, Z] = $derived(XYZFromSPD(spd, false));
@@ -27,12 +28,26 @@
 					class="spd-control"
 					min="0"
 					max="255"
+					step="8"
 					value={255 - value}
 					oninput={(event) =>
 						sliderChangeHandler((255 - +(event.target as HTMLInputElement).value) as number, idx)}
 				/>
 			{/each}
 		</div>
+	</div>
+	<span class="center-text"> activates </span>
+	<div class="activations">
+		{#each [Z, Y, X] as component, idx}
+			<div class="activation">
+				<div
+					class="activation-dot"
+					style:background-color={['#026ad3', '#0ace33', '#fa0b3e'][idx]}
+					style:--size={`${component * maxBubbleSize}px`}
+				></div>
+				<span class="label">{Math.round(component * 100 * 10) / 10}%</span>
+			</div>
+		{/each}
 	</div>
 	<span class="center-text"> becomes </span>
 	<div class="swatch" style:background-color={hex}></div>
@@ -129,5 +144,28 @@
 		border-radius: 50%;
 		background-color: #fff;
 		border: 2px solid #0c0c0c;
+	}
+
+	.activations {
+		display: flex;
+		width: 100%;
+		justify-content: space-around;
+		min-height: 48px;
+	}
+
+	.activation > .label {
+		font-size: small;
+	}
+
+	.activation {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.activation-dot {
+		height: var(--size);
+		width: var(--size);
+		border-radius: 50%;
 	}
 </style>
