@@ -3,7 +3,7 @@ import { d65 } from './standard-illuminants';
 type PulseType = 'valley' | 'mountain';
 export type SPD = Uint8Array; // spectral power distribution
 
-export const VISIBLE_RANGE = [380, 750];
+export const VISIBLE_RANGE = [390, 750];
 export const VISIBLE_RANGE_LENGTH = VISIBLE_RANGE[1] - VISIBLE_RANGE[0];
 
 export function generatePulse(

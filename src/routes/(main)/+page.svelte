@@ -5,6 +5,7 @@
 	import Meta from '$lib/components/Meta.svelte';
 
 	import hmdObjMeta from './blog/handmade-data-object/meta';
+	import clrSldMeta from './blog/color-solids/meta';
 </script>
 
 <Meta
@@ -36,6 +37,7 @@
 	>
 </h2>
 <Preview {...hmdObjMeta} />
+<Preview {...clrSldMeta} />
 
 <h2 id="wrote-header">
 	things I <Highlighter color={COLORS.blue} text="wrote" markerWidth={24} lines={1} fontSize={32}>

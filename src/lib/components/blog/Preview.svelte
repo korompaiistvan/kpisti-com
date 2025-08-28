@@ -19,6 +19,10 @@
 </div>
 
 <style>
+	.post-preview {
+		margin-block: 2rem;
+	}
+
 	.title {
 		font-size: calc(0.66 * var(--bg-grid-size));
 		margin-bottom: 1em;

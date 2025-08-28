@@ -19,9 +19,9 @@
 <Body>
 	<p>
 		I love color theory. Okay, maybe love is a strong word, but ever since seeing people run around
-		with Munsell color charts in architecture school, I was captivated by the tempting simplicity of
-		setting up a couple mathematical rules and getting something beautiful and harmonical out of it.
-		( I wish there was a profession dedicated to that intersection.)
+		with Munsell color charts in architecture school, I've been captivated by the tempting
+		simplicity of setting up a couple mathematical rules and getting something beautiful and
+		harmonical out of it. (I wish there was a profession dedicated to that intersection.)
 	</p>
 
 	<Divider />
@@ -30,8 +30,8 @@
 	<p>
 		I often feel a bit too preoccupied with theory for my - or anyone else's - good, but this post
 		serves two purposes: on the one hand, it's a summary of the main theoretical points, mostly for
-		myself. On the other, it's a way to build intuition about a topic that is suuuper difficult to
-		explain just in words.
+		myself and on the other, it's a way to build intuition about a topic that is suuuper difficult
+		to explain just in words.
 	</p>
 	<p>
 		But to know what we are looking at later on, we need words for a couple concepts, and that
@@ -45,7 +45,7 @@
 		eyes. "Okay, smartypants, if they are not real, how come we can turn them into numbers?"
 	</p>
 
-	<p>Well, let's take a look at a couple components of this system</p>
+	<p>Well, let's take a look at the individual components of this system</p>
 
 	<h3>Visible Light</h3>
 
@@ -68,7 +68,10 @@
 		</figcaption>
 	</figure>
 
-	<p>The light hitting our eyes is most often a mix of multiple different wavelengths</p>
+	<p>
+		The light hitting our eyes is most often a mix of multiple different wavelengths, unless you are
+		looking directly into a laser pointer - which you absolutely shouldn't do, by the way.
+	</p>
 	<h3>Cone cells</h3>
 
 	<p>
