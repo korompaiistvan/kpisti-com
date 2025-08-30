@@ -104,9 +104,27 @@
 	</p>
 
 	<SpdToColor />
-	<h2>The Solids</h2>
+	<h2>Color Solid</h2>
 
-	<SolidVizCanvas />
+	<p>
+		Imagine doing the above exercise of color mixing thousands of times, with a different waveform
+		each time. You would get thousands of points in 3D Space, where each axis corresponds to the
+		activation levels of the different types of cone cells. It would look like the following:
+	</p>
+	<figure>
+		<SolidVizCanvas />
+		<figcaption>
+			The rough shape of the solid formed by all visible colors, in the so-called XYZ color space.
+			The colors in this space form an elongated "tear-based" cilinder due to the shape of the color
+			sensitivity curves of the different cone cells.
+		</figcaption>
+	</figure>
+
+	<p>
+		This XYZ color space forms the basis of a lot of computational color theory. This blog post will
+		be extended with further explanations of the other perceptual color spaces and transformations
+		between them.
+	</p>
 </Body>
 
 <style>
@@ -135,5 +153,8 @@
 
 	.cmf-container > * {
 		grid-area: center;
+	}
+	figcaption {
+		margin-top: 1rem;
 	}
 </style>

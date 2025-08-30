@@ -17,11 +17,11 @@
 	const { scene } = useThrelte();
 
 	$effect(() => {
-		scene.background = new Color().setHex(0xfafafa);
+		scene.background = new Color().setHex(0xeaeaea);
 	});
 </script>
 
-<T.PerspectiveCamera makeDefault position={[100, 100, 100]}>
+<T.PerspectiveCamera makeDefault position={[120, 120, 120]}>
 	<OrbitControls autoRotate target={[0, 50, 0]} />
 </T.PerspectiveCamera>
 <T.DirectionalLight position={[0, 0, 255]} />
@@ -33,9 +33,9 @@
 					colors.flatMap((c) => {
 						const okLab = oklabConverter(c);
 						const lab = labConverter(c);
+						return [c.x * 100 - 50, c.y * 100, c.z * 100 - 50];
 						return [okLab.a * 100, okLab.l * 100, okLab.b * 100];
 						return [lab.a / 2, lab.l, lab.b / 2];
-						return [c.x * 100 - 50, c.y * 100, c.z * 100 - 50];
 					})
 				),
 				3
@@ -67,4 +67,4 @@
 	</T.BufferGeometry>
 	<PointsMaterial size={5} vertexColors toneMapped={false} />
 </T.Points>
-<Grid gridSize={[100, 100]} fadeDistance={200} maxRadius={50} type="polar" />
+<Grid gridSize={[100, 100]} cellSize={10} sectionSize={50} fadeDistance={200} />

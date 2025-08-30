@@ -16,6 +16,12 @@
 	}
 </script>
 
+<button
+	onclick={() => (spd = generateRandomSPD(resolution, Math.random() * 100))}
+	class="new-color-button"
+>
+	New Random Color
+</button>
 <div class="conversion-container">
 	<div class="spd-container">
 		<div class="spd">
@@ -52,12 +58,6 @@
 	<span class="center-text"> becomes </span>
 	<div class="swatch" style:background-color={hex}></div>
 </div>
-<button
-	onclick={() => (spd = generateRandomSPD(resolution, Math.random() * 100))}
-	class="new-color-button"
->
-	New Random Color
-</button>
 
 <style>
 	.conversion-container {
@@ -101,7 +101,9 @@
 		border-radius: 4px;
 		margin-top: 1rem;
 		padding: 0.125rem 0.25rem;
-		float: right;
+		display: block;
+		margin-left: auto;
+		font-size: small;
 	}
 
 	.spd-control {

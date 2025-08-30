@@ -3,6 +3,14 @@
 	import SolidVizScene from './SolidVizScene.svelte';
 </script>
 
-<Canvas>
-	<SolidVizScene />
-</Canvas>
+<div class="canvas">
+	<Canvas>
+		<SolidVizScene />
+	</Canvas>
+</div>
+
+<style>
+	.canvas {
+		height: 320px;
+	}
+</style>
