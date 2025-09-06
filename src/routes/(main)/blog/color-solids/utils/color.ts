@@ -3,7 +3,7 @@ import { d65 } from './standard-illuminants';
 type PulseType = 'valley' | 'mountain';
 export type SPD = Uint8Array; // spectral power distribution
 
-export const VISIBLE_RANGE = [380, 740];
+export const VISIBLE_RANGE = [380, 780];
 export const VISIBLE_RANGE_LENGTH = VISIBLE_RANGE[1] - VISIBLE_RANGE[0];
 
 export function generatePulse(
@@ -59,19 +59,24 @@ function colorMatchingFunction(wavelength: number) {
 	return [x_hat, y_hat, z_hat];
 }
 
+// https://en.wikipedia.org/wiki/CIE_1931_color_space#Computing_XYZ_from_spectral_data
 function d65SpectralPower(wavelength: number) {
 	const lower = (d65.findLast((e) => e[0] < wavelength) as number[]) ?? d65[0];
 	const higher = (d65.find((e) => e[0] >= wavelength) as number[]) ?? d65[d65.length - 1];
 
 	// linear interpolation
-	return ((wavelength - lower[0]) / (higher[0] - lower[0])) * (higher[1] - lower[1]) + lower[1];
+	return (
+		(((wavelength - lower[0]) / (higher[0] - lower[0])) * (higher[1] - lower[1]) + lower[1]) / 100
+	);
 }
 
 export function XYZFromSPD(spd: SPD, isEmissive: boolean = true) {
 	const resolution = VISIBLE_RANGE_LENGTH / spd.length;
 
 	let [X, Y, Z, N] = [0, 0, 0, 1];
+	const K = 1;
 	for (let i = 0; i < spd.length; i++) {
+		// FIXME, for large wavelength bands this is slightly inaccurate
 		const wavelength = VISIBLE_RANGE[0] + i * resolution;
 		const [x_hat, y_hat, z_hat] = colorMatchingFunction(wavelength);
 		const illuminantSpectralPower = isEmissive ? 1 : d65SpectralPower(wavelength);
@@ -84,9 +89,11 @@ export function XYZFromSPD(spd: SPD, isEmissive: boolean = true) {
 		Z += transmittance * illuminantSpectralPower * z_hat * resolution;
 	}
 
-	if (isEmissive) return [X, Y, Z];
+	const returnVector = isEmissive ? [X, Y, Z] : [(X / N) * K, (Y / N) * K, (Z / N) * K];
 
-	return [X / N, Y / N, Z / N];
+	console.assert(Math.max(...returnVector) < 2);
+
+	return returnVector;
 }
 
 export function visibleSpectrumXYZ() {
@@ -117,19 +124,21 @@ export function generateRandomSPD(resolution: number = 5, seed: number = 123) {
 }
 
 export function getOptimalColorSolid(resolution = 1) {
-	const colors = [];
+	const colors: number[][] = [];
 
 	let pulse: SPD;
+	let XYZ: number[];
 	for (
 		let startFreq = VISIBLE_RANGE[0];
 		startFreq <= VISIBLE_RANGE[1] - resolution;
 		startFreq += resolution
 	) {
 		for (let endFreq = startFreq + resolution; endFreq <= VISIBLE_RANGE[1]; endFreq += resolution) {
-			pulse = generatePulse(startFreq, endFreq, 'valley', resolution);
-			colors.push(XYZFromSPD(pulse));
-			pulse = generatePulse(startFreq, endFreq, 'mountain', resolution);
-			colors.push(XYZFromSPD(pulse));
+			(['valley', 'mountain'] as const).forEach((pulseType) => {
+				pulse = generatePulse(startFreq, endFreq, pulseType, resolution);
+				XYZ = XYZFromSPD(pulse, false);
+				colors.push(XYZ);
+			});
 		}
 	}
 
