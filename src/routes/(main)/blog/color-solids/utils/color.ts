@@ -145,6 +145,29 @@ export function getOptimalColorSolid(resolution = 1) {
 	return colors;
 }
 
+export function convertXyz65ToOklab({ x, y, z }: { x: number; y: number; z: number }) {
+	// based on https://bottosson.github.io/posts/oklab/
+	const M1 = [
+		[+0.8189330101, +0.3618667424, -0.1288597137],
+		[+0.0329845436, +0.9293118715, +0.0361456387],
+		[+0.0482003018, +0.2643662691, +0.633851707]
+	];
+
+	const M2 = [
+		[+0.2104542553, +0.793617785, -0.0040720468],
+		[+1.9779984951, -2.428592205, +0.4505937099],
+		[+0.0259040371, +0.7827717662, -0.808675766]
+	];
+
+	const lms = matrixProduct(M1, [[x], [y], [z]]);
+	const lDashed = Math.pow(lms[0][0], 1 / 3);
+	const mDashed = Math.pow(lms[1][0], 1 / 3);
+	const sDashed = Math.pow(lms[2][0], 1 / 3);
+
+	const okLab = matrixProduct(M2, [[lDashed], [mDashed], [sDashed]]);
+	return { l: okLab[0][0], a: okLab[1][0], b: okLab[2][0] };
+}
+
 function matrixProduct(m1: number[][], m2: number[][]) {
 	// assuming row major order and correctly formed matrices (i.e. rows of the same length, all cells being a number)
 
