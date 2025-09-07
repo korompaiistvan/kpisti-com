@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getOptimalColorSolid, convertXyz65ToOklab } from '../utils/color';
+	import { getOptimalColorSolid, convertXyz65ToOklab, convertXyz65ToLms } from '../utils/color';
 	import { T, useThrelte } from '@threlte/core';
 	import { OrbitControls, Grid } from '@threlte/extras';
 	import { ConvexHull } from 'three/addons/math/ConvexHull.js';
@@ -9,11 +9,11 @@
 
 	const {
 		solidOrPoints = 'points',
-		colorSpace = 'xyz',
+		colorSpace = 'lab',
 		gamut = 'visible-colors'
 	}: {
 		solidOrPoints?: 'solid' | 'points' | 'both';
-		colorSpace?: 'xyz' | 'lab' | 'oklab';
+		colorSpace?: 'xyz' | 'lab' | 'oklab' | 'lms';
 		gamut?: 'visible-colors' | 'srgb';
 	} = $props();
 
@@ -39,9 +39,13 @@
 				return [displayColor.x * 100 - 50, displayColor.y * 100, displayColor.z * 100 - 50];
 			}
 			case 'oklab': {
-				// const oklab = oklabConverter(displayColor);
-				const oklab = convertXyz65ToOklab(color);
+				const oklab = convertXyz65ToOklab(displayColor);
 				return [oklab.a * 100, oklab.l * 100, oklab.b * 100];
+			}
+
+			case 'lms': {
+				const lms = convertXyz65ToLms(displayColor);
+				return [lms.l * 100 - 50, lms.m * 100, lms.s * 100 - 50];
 			}
 		}
 	});
@@ -85,7 +89,7 @@
 	const { scene } = useThrelte();
 
 	$effect(() => {
-		scene.background = new Color().setHex(0xeaeaea);
+		scene.background = new Color().setHex(0x888888);
 	});
 </script>
 

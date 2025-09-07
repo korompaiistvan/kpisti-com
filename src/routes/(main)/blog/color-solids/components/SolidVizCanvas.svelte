@@ -3,7 +3,8 @@
 	import SolidVizScene from './SolidVizScene.svelte';
 
 	let solidOrPoints: 'points' | 'solid' = $state('points');
-	let colorSpace: 'xyz' | 'lab' | 'oklab' = $state('xyz');
+	let colorSpace: 'xyz' | 'lab' | 'oklab' | 'lms' = $state('lms');
+	let clampChroma: boolean = $state(false);
 </script>
 
 <div class="controls">
@@ -15,11 +16,16 @@
 		<option value="xyz">XYZ</option>
 		<option value="lab">LAB</option>
 		<option value="oklab">okLAB</option>
+		<option value="lms">LMS</option>
 	</select>
+	<label>
+		<input type="checkbox" bind:checked={clampChroma} />
+		Clamp Chroma?
+	</label>
 </div>
 <div class="canvas">
 	<Canvas>
-		<SolidVizScene {solidOrPoints} {colorSpace} />
+		<SolidVizScene {solidOrPoints} {colorSpace} gamut={clampChroma ? 'srgb' : 'visible-colors'} />
 	</Canvas>
 </div>
 
