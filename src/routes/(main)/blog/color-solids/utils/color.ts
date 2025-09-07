@@ -144,3 +144,37 @@ export function getOptimalColorSolid(resolution = 1) {
 
 	return colors;
 }
+
+function matrixProduct(m1: number[][], m2: number[][]) {
+	// assuming row major order and correctly formed matrices (i.e. rows of the same length, all cells being a number)
+
+	if (m1[0].length !== m2.length)
+		throw new Error(
+			'The number of columns in the first matrix must be equal to the number of rows in the second matrix'
+		);
+
+	const product = Array.from({ length: m1.length }).map((_, rowIdx) =>
+		Array.from({ length: m2[0].length }).map((_, colIdx) => {
+			let value = 0;
+
+			for (let k = 0; k < m2.length; k++) {
+				value += m1[rowIdx][k] * m2[k][colIdx];
+			}
+			return value;
+		})
+	);
+
+	return product;
+}
+
+export function convertXyz65ToLms({ x, y, z }: { x: number; y: number; z: number }) {
+	const vonKriesTransformationMatrix = [
+		[0.4002, 0.7076, -0.0808],
+		[-0.2263, 1.1653, 0.0457],
+		[0, 0, 0.9182]
+	];
+
+	const lms = matrixProduct(vonKriesTransformationMatrix, [[x], [y], [z]]);
+
+	return { mode: 'lms', l: lms[0][0], m: lms[1][0], s: lms[2][0] };
+}

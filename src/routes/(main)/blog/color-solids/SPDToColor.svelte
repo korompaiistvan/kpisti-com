@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatHex } from 'culori';
 	import SpdChart from './SPDChart.svelte';
-	import { generateRandomSPD, XYZFromSPD } from './utils/color';
+	import { convertXyz65ToLms, generateRandomSPD, XYZFromSPD } from './utils/color';
 
 	const resolution = 30;
 	const maxBubbleSize = 48;
@@ -9,6 +9,7 @@
 
 	const [X, Y, Z] = $derived(XYZFromSPD(spd, false));
 	const hex = $derived(formatHex({ mode: 'xyz65', x: X, y: Y, z: Z }));
+	const { l, m, s } = $derived(convertXyz65ToLms({ x: X, y: Y, z: Z }));
 
 	function sliderChangeHandler(value: number, idx: number) {
 		spd[idx] = value;
@@ -44,7 +45,7 @@
 	</div>
 	<span class="center-text"> activates </span>
 	<div class="activations">
-		{#each [Z, Y, X] as component, idx}
+		{#each [s, m, l] as component, idx}
 			<div class="activation">
 				<div
 					class="activation-dot"
