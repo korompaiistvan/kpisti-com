@@ -2,7 +2,7 @@
 	import { Canvas } from '@threlte/core';
 	import SolidVizScene from './SolidVizScene.svelte';
 
-	let solidOrPoints: 'points' | 'solid' = $state('points');
+	let solidOrPoints: 'points' | 'solid' = $state('solid');
 	let colorSpace: 'xyz' | 'lab' | 'oklab' | 'lms' = $state('lms');
 	let clampChroma: boolean = $state(false);
 </script>
@@ -17,6 +17,8 @@
 		<option value="lab">LAB</option>
 		<option value="oklab">okLAB</option>
 		<option value="lms">LMS</option>
+		<option value="lrgb">lRGB</option>
+		<option value="srgb">sRGB</option>
 	</select>
 	<label>
 		<input type="checkbox" bind:checked={clampChroma} />

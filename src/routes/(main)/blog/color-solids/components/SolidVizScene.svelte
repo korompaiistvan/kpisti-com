@@ -12,7 +12,7 @@
 		gamut = 'visible-colors'
 	}: {
 		solidOrPoints?: 'solid' | 'points' | 'both' | 'neither';
-		colorSpace?: 'xyz' | 'lab' | 'oklab' | 'lms';
+		colorSpace?: 'xyz' | 'lab' | 'oklab' | 'lms' | 'lrgb' | 'srgb';
 		gamut?: 'visible-colors' | 'srgb';
 	} = $props();
 
@@ -23,6 +23,7 @@
 	});
 	const rgbConverter = converter('rgb');
 	const labConverter = converter('lab');
+	const lrgbConverter = converter('lrgb');
 
 	// we construct a convex hull in XYZ, where the color solid is convex
 	// later we can reuse the faces of this solid, but with different vertex positions
@@ -45,6 +46,16 @@
 			case 'lms': {
 				const lms = convertXyz65ToLms(displayColor);
 				return [lms.l * 100 - 50, lms.m * 100, lms.s * 100 - 50];
+			}
+
+			case 'lrgb': {
+				const rgb = lrgbConverter(displayColor);
+				return [rgb.r * 100 - 50, rgb.g * 100, rgb.b * 100 - 50];
+			}
+
+			case 'srgb': {
+				const rgb = rgbConverter(displayColor);
+				return [rgb.r * 100 - 50, rgb.g * 100, rgb.b * 100 - 50];
 			}
 		}
 	});
@@ -107,7 +118,7 @@
 
 <T.AmbientLight intensity={3} />
 <T.DirectionalLight
-	intensity={10}
+	intensity={20}
 	position={directionalLightPosition}
 	castShadow
 	oncreate={(ref) => {
