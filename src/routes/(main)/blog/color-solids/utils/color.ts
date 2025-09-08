@@ -1,4 +1,5 @@
 import { splitmix32 } from '$lib/random';
+import { converter } from 'culori';
 import { d65 } from './standard-illuminants';
 type PulseType = 'valley' | 'mountain';
 export type SPD = Uint8Array; // spectral power distribution
@@ -7,31 +8,19 @@ export const VISIBLE_RANGE = [380, 780];
 export const VISIBLE_RANGE_LENGTH = VISIBLE_RANGE[1] - VISIBLE_RANGE[0];
 
 export function generatePulse(
-	start: number,
-	end: number,
-	type: PulseType,
-	resolution: number
+	shift: number, // nm
+	width: number, // nm
+	resolution: number // nm
 ): SPD {
-	const pulse = new Uint8Array(Math.floor(VISIBLE_RANGE_LENGTH / resolution));
+	if (width > VISIBLE_RANGE_LENGTH) throw new Error('Pulse cannot be wider than the range');
+	if (shift >= VISIBLE_RANGE_LENGTH) throw new Error('Shift larger than the range');
 
-	// verbose code, but fast
-	let value = type === 'valley' ? 255 : 0;
-	for (let i = 0; i < (start - VISIBLE_RANGE[0]) / resolution; i++) {
-		pulse[i] = value;
-	}
+	const pulse = new Uint8Array(Math.floor(VISIBLE_RANGE_LENGTH / resolution)).fill(0);
+	const shiftIdx = Math.floor(shift / resolution);
 
-	value = type === 'valley' ? 0 : 255;
-	for (
-		let i = (start - VISIBLE_RANGE[0]) / resolution;
-		i < (end - VISIBLE_RANGE[0]) / resolution;
-		i++
-	) {
-		pulse[i] = value;
-	}
-
-	value = type === 'valley' ? 255 : 0;
-	for (let i = (end - VISIBLE_RANGE[0]) / resolution; i < pulse.length; i++) {
-		pulse[i] = value;
+	for (let i = 0; i < width / resolution; i++) {
+		const idx = (shiftIdx + i) % pulse.length;
+		pulse[idx] = 255;
 	}
 
 	return pulse;
@@ -89,7 +78,9 @@ export function XYZFromSPD(spd: SPD, isEmissive: boolean = true) {
 		Z += transmittance * illuminantSpectralPower * z_hat * resolution;
 	}
 
-	const returnVector = isEmissive ? [X, Y, Z] : [(X / N) * K, (Y / N) * K, (Z / N) * K];
+	const returnVector = isEmissive
+		? ([X, Y, Z] satisfies [number, number, number])
+		: ([(X / N) * K, (Y / N) * K, (Z / N) * K] satisfies [number, number, number]);
 
 	console.assert(Math.max(...returnVector) < 2);
 
@@ -98,9 +89,7 @@ export function XYZFromSPD(spd: SPD, isEmissive: boolean = true) {
 
 export function visibleSpectrumXYZ() {
 	return Array.from({ length: VISIBLE_RANGE_LENGTH })
-		.map((e, idx) =>
-			generatePulse(VISIBLE_RANGE[0] + idx, VISIBLE_RANGE[0] + (idx + 1), 'mountain', 1)
-		)
+		.map((e, idx) => generatePulse(idx, 1, 1))
 		.map((spd) => XYZFromSPD(spd));
 }
 
@@ -124,25 +113,60 @@ export function generateRandomSPD(resolution: number = 5, seed: number = 123) {
 }
 
 export function getOptimalColorSolid(resolution = 1) {
-	const colors: number[][] = [];
+	// mesh construction inspired by https://github.com/mjhorvath/Datumizer-Wikipedia-Illustrations/blob/master/Color/cie_color_solids/cie_mesh_generation.inc
+	const sampleCount = VISIBLE_RANGE_LENGTH / resolution;
+	const colors: [number, number, number][][] = Array.from({ length: sampleCount + 1 }).map((r) =>
+		Array.from({ length: sampleCount }).map((c) => [0, 0, 0])
+	);
 
 	let pulse: SPD;
-	let XYZ: number[];
-	for (
-		let startFreq = VISIBLE_RANGE[0];
-		startFreq <= VISIBLE_RANGE[1] - resolution;
-		startFreq += resolution
-	) {
-		for (let endFreq = startFreq + resolution; endFreq <= VISIBLE_RANGE[1]; endFreq += resolution) {
-			(['valley', 'mountain'] as const).forEach((pulseType) => {
-				pulse = generatePulse(startFreq, endFreq, pulseType, resolution);
-				XYZ = XYZFromSPD(pulse, false);
-				colors.push(XYZ);
-			});
+	let XYZ: [number, number, number];
+	// loop boundary values here produce duplicate blacks and whites in first and last rows respectively
+	// this is useful for mesh construction later on
+	for (let width = 0; width <= VISIBLE_RANGE_LENGTH; width += resolution) {
+		for (let shift = 0; shift < VISIBLE_RANGE_LENGTH; shift += resolution) {
+			pulse = generatePulse(shift, width, resolution);
+			XYZ = XYZFromSPD(pulse, false);
+			try {
+				colors[width / resolution][shift / resolution] = XYZ;
+			} catch (err) {
+				console.error(pulse);
+				console.error(width, shift, resolution);
+				throw err;
+			}
 		}
 	}
 
-	return colors;
+	let prevColIdx: number;
+	const faces: number[] = [];
+
+	const calculateFlatIndex = (rowIdx: number, colIdx: number) => {
+		return rowIdx * sampleCount + (colIdx < 0 ? sampleCount - 1 : colIdx);
+	};
+
+	for (let rowIdx = 1; rowIdx < colors.length; rowIdx++) {
+		for (let colIdx = 0; colIdx < colors[0].length; colIdx++) {
+			prevColIdx = colIdx === 0 ? sampleCount - 1 : colIdx - 1;
+			// triangle1 is current - bottomleft - left, triangle2 is current - bottom - bottomleft (matching CCW winding order)
+			faces.push(
+				...[
+					calculateFlatIndex(rowIdx, colIdx),
+					calculateFlatIndex(rowIdx - 1, colIdx - 1),
+					calculateFlatIndex(rowIdx, colIdx - 1)
+				],
+				...[
+					calculateFlatIndex(rowIdx, colIdx),
+					calculateFlatIndex(rowIdx - 1, colIdx),
+					calculateFlatIndex(rowIdx - 1, colIdx - 1)
+				]
+			);
+		}
+	}
+
+	return {
+		vertices: colors.flat(),
+		faces
+	};
 }
 
 export function convertXyz65ToOklab({ x, y, z }: { x: number; y: number; z: number }) {

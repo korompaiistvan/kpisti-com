@@ -2,9 +2,8 @@
 	import { getOptimalColorSolid, convertXyz65ToOklab, convertXyz65ToLms } from '../utils/color';
 	import { T, useThrelte, useTask } from '@threlte/core';
 	import { OrbitControls, Grid } from '@threlte/extras';
-	import { ConvexHull } from 'three/addons/math/ConvexHull.js';
 	import * as THREE from 'three';
-	import { clampChroma, converter, type Xyz65 } from 'culori';
+	import { clampChroma, clampRgb, converter, type Xyz65 } from 'culori';
 	import { Color } from 'three';
 
 	const {
@@ -17,8 +16,8 @@
 		gamut?: 'visible-colors' | 'srgb';
 	} = $props();
 
-	const optimalColorSolid = getOptimalColorSolid(2.5);
-	const colors = optimalColorSolid.map((c) => {
+	const optimalColorSolid = getOptimalColorSolid(5);
+	const colors = optimalColorSolid.vertices.map((c) => {
 		const rounder = (n: number) => Math.round(n * 10000) / 10000;
 		return { mode: 'xyz65', x: rounder(c[0]), y: rounder(c[1]), z: rounder(c[2]) } as const;
 	});
@@ -28,7 +27,7 @@
 	// we construct a convex hull in XYZ, where the color solid is convex
 	// later we can reuse the faces of this solid, but with different vertex positions
 	const colorToPosition = $derived((color: Xyz65) => {
-		const displayColor = gamut === 'srgb' ? clampChroma(color) : color;
+		const displayColor = gamut === 'srgb' ? clampRgb(color) : color;
 
 		switch (colorSpace) {
 			case 'lab': {
@@ -56,34 +55,21 @@
 	};
 
 	const hullGeometry = $derived.by(() => {
-		const pointIndexMap = new Map();
-		const positionsForHull = colors.map((c, idx) => {
-			const [x, y, z] = colorToPosition(c);
-			const vector = new THREE.Vector3(x, y, z);
-			pointIndexMap.set(vector, idx);
-			return vector;
-		});
-		const convexHull = new ConvexHull().setFromPoints(positionsForHull);
+		const positions = new Float32Array(optimalColorSolid.faces.length * 3);
+		const colors = new Float32Array(optimalColorSolid.faces.length * 3);
+		let color: Xyz65;
 
-		let hullVertexPositions: number[] = [];
-		let hullVertexColors: number[] = [];
-		convexHull.faces.forEach((face) => {
-			let edge = face.edge;
-			do {
-				const hullPoint = edge.head().point;
-				const idx = pointIndexMap.get(hullPoint);
-				const color = colors[idx];
+		optimalColorSolid.faces.forEach((vertexIdx, idx) => {
+			const vertex = optimalColorSolid.vertices[vertexIdx];
+			color = { mode: 'xyz65', x: vertex[0], y: vertex[1], z: vertex[2] };
 
-				hullVertexPositions.push(...colorToPosition(color));
-				hullVertexColors.push(...colorToRgbVector(color));
-
-				edge = edge.next;
-			} while (edge !== face.edge);
+			positions.set(colorToPosition(color), idx * 3);
+			colors.set(colorToRgbVector(color), idx * 3);
 		});
 
 		return {
-			positions: hullVertexPositions,
-			colors: hullVertexColors
+			positions,
+			colors
 		};
 	});
 	const { scene } = useThrelte();
@@ -95,7 +81,16 @@
 	let rotation = $state(0);
 
 	useTask((delta) => {
-		rotation += delta / 2;
+		rotation += delta / 4;
+	});
+
+	let directionalLightPosition: [number, number, number] = $derived.by(() => {
+		const y = 200;
+		const x = -100;
+		const z = 50;
+		const xDash = Math.cos(rotation) * x - Math.sin(rotation) * z;
+		const zDash = Math.sin(rotation) * x + Math.cos(rotation) * z;
+		return [xDash, y, zDash];
 	});
 </script>
 
@@ -107,23 +102,15 @@
 	}}
 >
 	<T.PointLight color={0xffffff} intensity={10000} />
-	<OrbitControls target={[0, 40, 0]} />
+	<OrbitControls target={[0, 40, 0]} autoRotate />
 </T.PerspectiveCamera>
 
-<T.AmbientLight />
+<T.AmbientLight intensity={3} />
 <T.DirectionalLight
 	intensity={10}
-	position={[-100, 200, 50]}
+	position={directionalLightPosition}
 	castShadow
 	oncreate={(ref) => {
-		console.log(
-			ref.shadow.camera.left,
-			ref.shadow.camera.right,
-			ref.shadow.camera.top,
-			ref.shadow.camera.bottom,
-			ref.shadow.camera.near,
-			ref.shadow.camera.far
-		);
 		ref.shadow.camera.left = -150;
 		ref.shadow.camera.right = 150;
 		ref.shadow.camera.top = 150;
@@ -133,7 +120,7 @@
 	}}
 />
 
-<T.Group rotation.y={rotation} position.y={10}>
+<T.Group position.y={10}>
 	{#if solidOrPoints === 'points' || solidOrPoints === 'both'}
 		<T.Points>
 			<T.BufferGeometry>
@@ -177,7 +164,7 @@
 		<T.Mesh castShadow>
 			<T.BufferGeometry>
 				<T.BufferAttribute
-					args={[new Float32Array(hullGeometry.positions), 3]}
+					args={[hullGeometry.positions, 3]}
 					attach={({ parent, ref }) => {
 						// @ts-ignore
 						parent.setAttribute('position', ref);
@@ -185,14 +172,14 @@
 				/>
 
 				<T.BufferAttribute
-					args={[new Float32Array(hullGeometry.colors), 3]}
+					args={[hullGeometry.colors, 3]}
 					attach={({ parent, ref }) => {
 						// @ts-ignore
 						parent.setAttribute('color', ref);
 					}}
 				/>
 			</T.BufferGeometry>
-			<T.MeshPhongMaterial size="5" vertexColors flatShading={true} />
+			<T.MeshPhongMaterial size="5" vertexColors flatShading={true} side={2} />
 			<!-- <T.MeshNormalMaterial /> -->
 		</T.Mesh>
 	{/if}
