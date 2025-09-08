@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getOptimalColorSolid, convertXyz65ToOklab, convertXyz65ToLms } from '../utils/color';
-	import { T, useThrelte } from '@threlte/core';
+	import { T, useThrelte, useTask } from '@threlte/core';
 	import { OrbitControls, Grid } from '@threlte/extras';
 	import { ConvexHull } from 'three/addons/math/ConvexHull.js';
 	import * as THREE from 'three';
@@ -12,7 +12,7 @@
 		colorSpace = 'lab',
 		gamut = 'visible-colors'
 	}: {
-		solidOrPoints?: 'solid' | 'points' | 'both';
+		solidOrPoints?: 'solid' | 'points' | 'both' | 'neither';
 		colorSpace?: 'xyz' | 'lab' | 'oklab' | 'lms';
 		gamut?: 'visible-colors' | 'srgb';
 	} = $props();
@@ -91,72 +91,113 @@
 	$effect(() => {
 		scene.background = new Color().setHex(0x888888);
 	});
+
+	let rotation = $state(0);
+
+	useTask((delta) => {
+		rotation += delta / 2;
+	});
 </script>
 
-<T.PerspectiveCamera makeDefault position={[-125, 120, -125]}>
-	<OrbitControls autoRotate target={[0, 50, 0]} />
+<T.PerspectiveCamera
+	makeDefault
+	position={[0, 120, 200]}
+	oncreate={(ref) => {
+		ref.lookAt(new THREE.Vector3(0, 40, 0));
+	}}
+>
+	<T.PointLight color={0xffffff} intensity={10000} />
+	<OrbitControls target={[0, 40, 0]} />
 </T.PerspectiveCamera>
-<T.DirectionalLight position={[0, 0, 255]} />
-{#if solidOrPoints !== 'solid'}
-	<T.Points>
-		<T.BufferGeometry>
-			<T.BufferAttribute
-				args={[
-					new Float32Array(
-						colors.flatMap((color) => {
-							return colorToPosition(color);
-						})
-					),
-					3
-				]}
-				attach={({ parent, ref }) => {
-					// @ts-ignore
-					parent.setAttribute('position', ref);
 
-					return () => {};
-				}}
-			/>
-			<T.BufferAttribute
-				args={[
-					new Float32Array(
-						colors.flatMap((color) => {
-							return colorToRgbVector(color);
-						})
-					),
-					3
-				]}
-				attach={({ parent, ref }) => {
-					// @ts-ignore
-					parent.setAttribute('color', ref);
+<T.AmbientLight />
+<T.DirectionalLight
+	intensity={10}
+	position={[-100, 200, 50]}
+	castShadow
+	oncreate={(ref) => {
+		console.log(
+			ref.shadow.camera.left,
+			ref.shadow.camera.right,
+			ref.shadow.camera.top,
+			ref.shadow.camera.bottom,
+			ref.shadow.camera.near,
+			ref.shadow.camera.far
+		);
+		ref.shadow.camera.left = -150;
+		ref.shadow.camera.right = 150;
+		ref.shadow.camera.top = 150;
+		ref.shadow.camera.bottom = -150;
+		ref.shadow.camera.far = 2000;
+		ref.shadow.camera.updateProjectionMatrix();
+	}}
+/>
 
-					return () => {};
-				}}
-			/>
-		</T.BufferGeometry>
-		<T.PointsMaterial size={5} vertexColors toneMapped={false} opacity={0} />
-	</T.Points>
-{/if}
-{#if solidOrPoints !== 'points'}
-	<T.Mesh>
-		<T.BufferGeometry>
-			<T.BufferAttribute
-				args={[new Float32Array(hullGeometry.positions), 3]}
-				attach={({ parent, ref }) => {
-					// @ts-ignore
-					parent.setAttribute('position', ref);
-				}}
-			/>
+<T.Group rotation.y={rotation} position.y={10}>
+	{#if solidOrPoints === 'points' || solidOrPoints === 'both'}
+		<T.Points>
+			<T.BufferGeometry>
+				<T.BufferAttribute
+					args={[
+						new Float32Array(
+							colors.flatMap((color) => {
+								return colorToPosition(color);
+							})
+						),
+						3
+					]}
+					attach={({ parent, ref }) => {
+						// @ts-ignore
+						parent.setAttribute('position', ref);
 
-			<T.BufferAttribute
-				args={[new Float32Array(hullGeometry.colors), 3]}
-				attach={({ parent, ref }) => {
-					// @ts-ignore
-					parent.setAttribute('color', ref);
-				}}
-			/>
-		</T.BufferGeometry>
-		<T.MeshBasicMaterial size="5" vertexColors toneMapped={false} />
-		<!-- <T.MeshNormalMaterial /> -->
-	</T.Mesh>
-{/if}
-<Grid gridSize={[100, 100]} cellSize={10} sectionSize={50} fadeDistance={200} />
+						return () => {};
+					}}
+				/>
+				<T.BufferAttribute
+					args={[
+						new Float32Array(
+							colors.flatMap((color) => {
+								return colorToRgbVector(color);
+							})
+						),
+						3
+					]}
+					attach={({ parent, ref }) => {
+						// @ts-ignore
+						parent.setAttribute('color', ref);
+
+						return () => {};
+					}}
+				/>
+			</T.BufferGeometry>
+			<T.PointsMaterial size={5} vertexColors opacity={0} toneMapped={false} />
+		</T.Points>
+	{/if}
+	{#if solidOrPoints === 'solid' || solidOrPoints === 'both'}
+		<T.Mesh castShadow>
+			<T.BufferGeometry>
+				<T.BufferAttribute
+					args={[new Float32Array(hullGeometry.positions), 3]}
+					attach={({ parent, ref }) => {
+						// @ts-ignore
+						parent.setAttribute('position', ref);
+					}}
+				/>
+
+				<T.BufferAttribute
+					args={[new Float32Array(hullGeometry.colors), 3]}
+					attach={({ parent, ref }) => {
+						// @ts-ignore
+						parent.setAttribute('color', ref);
+					}}
+				/>
+			</T.BufferGeometry>
+			<T.MeshPhongMaterial size="5" vertexColors flatShading={true} />
+			<!-- <T.MeshNormalMaterial /> -->
+		</T.Mesh>
+	{/if}
+</T.Group>
+<T.Mesh receiveShadow rotation.x={-Math.PI / 2}>
+	<T.CircleGeometry args={[300, 72]} />
+	<T.MeshStandardMaterial color="white" />
+</T.Mesh>
