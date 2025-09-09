@@ -86,7 +86,7 @@
 	const { scene } = useThrelte();
 
 	$effect(() => {
-		scene.background = new Color().setHex(0x888888);
+		scene.background = new Color().setHex(0xc2cdde);
 	});
 
 	let rotation = $state(0);
@@ -116,9 +116,9 @@
 	<OrbitControls target={[0, 40, 0]} autoRotate />
 </T.PerspectiveCamera>
 
-<T.AmbientLight intensity={3} />
+<T.AmbientLight intensity={2} />
 <T.DirectionalLight
-	intensity={20}
+	intensity={10}
 	position={directionalLightPosition}
 	castShadow
 	oncreate={(ref) => {
@@ -197,5 +197,5 @@
 </T.Group>
 <T.Mesh receiveShadow rotation.x={-Math.PI / 2}>
 	<T.CircleGeometry args={[300, 72]} />
-	<T.MeshStandardMaterial color="white" />
+	<T.MeshStandardMaterial color={0xe4efff} />
 </T.Mesh>
