@@ -15,5 +15,6 @@
 		padding: 0.25em 0.5em;
 		border-radius: 6px;
 		text-decoration: none;
+		color: inherit;
 	}
 </style>

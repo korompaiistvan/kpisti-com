@@ -8,6 +8,7 @@
 	// @ts-expect-error the url params are not currently recognized by ts for nehanced img in svelte
 	import a11yIntro from './images/a11y-intro.webp?enhanced&aspect=16:9';
 	import meta from './meta';
+	import NavigationButton from '$lib/components/NavigationButton.svelte';
 </script>
 
 <Header>
@@ -36,31 +37,33 @@
 	<Divider />
 	<h2>Part 1 - The What</h2>
 	<p>A description of disabilities, techniques and standards based on existing guidelinesrts.</p>
-	<a href="https://thevizcollective.starschema.com/posts/accessibility-and-data-visualization">
+	<NavigationButton
+		href="https://thevizcollective.starschema.com/posts/accessibility-and-data-visualization"
+	>
 		Go to Blog Post
-	</a>
+	</NavigationButton>
 
 	<h2>Part 2 - The How</h2>
 	<p>
 		A Practical Guide for Accessibility in Business Intelligence Tools - Approaches and
 		possibilities for applying techniques described in the first post in Tableau and Power BI
 	</p>
-	<a
+	<NavigationButton
 		href="https://thevizcollective.starschema.com/posts/a-practical-guide-for-accessibility-in-business-intelligence-tools"
 	>
 		Go to Blog Post
-	</a>
+	</NavigationButton>
 
 	<h2>Part 3 - The Why</h2>
 	<p>
 		A plea to data leaders to invest in dataviz accessibility — spoiler: it makes total business
 		sense
 	</p>
-	<a
+	<NavigationButton
 		href="https://thevizcollective.starschema.com/posts/investing-in-dataviz-accessibility-pays-off"
 	>
 		Go to Blog Post
-	</a>
+	</NavigationButton>
 </Body>
 
 <style>
