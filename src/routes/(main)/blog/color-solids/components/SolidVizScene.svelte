@@ -25,6 +25,8 @@
 
 	const hullGeometry = getHullGeometry();
 
+	const isSafari = navigator ? /^((?!chrome|android).)*safari/i.test(navigator.userAgent) : false;
+
 	const morphInfluences = new Tween<Record<MorphableColorSpace | `${ColorSpace}Clamped`, number>>(
 		{
 			lab: 0,
@@ -115,11 +117,10 @@
 
 <T.Group position.y={10}>
 	{#if solidOrPoints === 'points'}
-		<T.Points castShadow geometry={hullGeometry} {morphTargetInfluences}>
+		<T.Points castShadow={!isSafari} geometry={hullGeometry} {morphTargetInfluences}>
 			<T.PointsMaterial
-				size={5}
+				size={3}
 				vertexColors
-				opacity={0}
 				toneMapped={false}
 				in={fade(0, 600, 0)}
 				out={fade(0, 600, 0)}
