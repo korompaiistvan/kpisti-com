@@ -70,7 +70,7 @@
 			type="button"
 			aria-label="Open Nav Menu"
 			class="mobile-menu-open-btn"
-			onclick={toggleMobileMenuOpen}>O</button
+			onclick={toggleMobileMenuOpen}>☰</button
 		>
 	</div>
 </nav>
@@ -105,6 +105,11 @@
 		transition: scale 0.2s ease-in-out;
 	}
 
+	.mobile-menu-open-btn {
+		font-size: x-large;
+		margin-top: -0.12em;
+	}
+
 	.mobile-menu-close-btn {
 		position: absolute;
 		right: var(--bg-grid-size);
@@ -116,6 +121,7 @@
 		place-content: center;
 		gap: var(--bg-grid-size);
 		position: absolute;
+		z-index: 1;
 		inset: 0;
 		width: 100%;
 		transition: transform 0.5s ease-in-out;
