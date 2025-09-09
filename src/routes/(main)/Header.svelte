@@ -4,6 +4,8 @@
 	import rehighlightLogo from './rehighlight.svg?raw';
 
 	import { page } from '$app/state';
+	import { afterNavigate } from '$app/navigation';
+	import { curveStepBefore } from 'd3-shape';
 
 	const isCurrent = (href: string) => {
 		return href === page.url.pathname ? 'page' : false;
@@ -12,6 +14,8 @@
 	const { onHighlightSeedUpdate }: { onHighlightSeedUpdate: (newSeed: number) => void } = $props();
 
 	let mobileMenuOpen = $state(false);
+
+	afterNavigate(() => (mobileMenuOpen = false));
 
 	const toggleMobileMenuOpen = () => {
 		mobileMenuOpen = !mobileMenuOpen;
@@ -100,6 +104,10 @@
 		gap: 1rem;
 	}
 
+	.rehighlight-button {
+		cursor: pointer;
+	}
+
 	.rehighlight-button:hover {
 		scale: 1.05;
 		transition: scale 0.2s ease-in-out;
@@ -107,11 +115,13 @@
 
 	.mobile-menu-open-btn {
 		font-size: x-large;
+		cursor: pointer;
 		margin-top: -0.12em;
 	}
 
 	.mobile-menu-close-btn {
 		position: absolute;
+		cursor: pointer;
 		right: var(--bg-grid-size);
 		top: var(--bg-grid-size);
 	}

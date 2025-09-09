@@ -13,7 +13,10 @@
 			</li>
 		</ul>
 	</nav>
-	<nav class="site-links section"></nav>
+	<div class="section contact">
+		<h2>Contact</h2>
+		<p>istvan.korompai@hey.com</p>
+	</div>
 </footer>
 
 <style>
@@ -21,22 +24,28 @@
 		margin-top: calc(2 * var(--bg-grid-size));
 		padding-top: calc(0.5 * var(--bg-grid-size));
 		border-top: 1px solid currentColor;
+		display: flex;
+		justify-content: space-between;
 	}
 
 	h2 {
 		font-size: large;
 		font-weight: 500;
+		margin-bottom: calc(0.25 * var(--bg-grid-size));
 	}
 
 	ul {
 		list-style: none;
 		padding: unset;
 		margin: unset;
-		margin-top: calc(0.25 * var(--bg-grid-size));
 	}
 
 	a {
 		text-decoration: none;
 		color: unset;
+	}
+
+	.section.contact {
+		text-align: right;
 	}
 </style>

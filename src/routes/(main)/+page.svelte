@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { COLORS } from '$lib/color-palette';
-	import Preview from '$lib/components/blog/Preview.svelte';
 	import Highlighter from '$lib/components/Highlighter.svelte';
 	import Meta from '$lib/components/Meta.svelte';
 
-	import hmdObjMeta from './blog/handmade-data-object/meta';
+	import hmdObjMeta from './work/handmade-data-object/meta';
 	import clrSldMeta from './blog/color-solids/meta';
+	import WorkSection from '$lib/components/WorkSection.svelte';
+	import BlogSection from '$lib/components/BlogSection.svelte';
 </script>
 
 <Meta
@@ -26,24 +27,13 @@
 		</Highlighter> based in Vienna.
 	</h1>
 	<p class="intro--notes">
-		Follow me on BlueSky, drop me an e-mail to say hi or simply check out the awesome handmade
-		dataviz I made with Julcsi & Tomi.
+		Follow me on my socials, drop me an e-mail to say hi or simply check out the work I do below
 	</p>
 </div>
 
-<h2 id="made-header">
-	stuff I <Highlighter color={COLORS.pink} text="made" markerWidth={24} fontSize={32} lines={1}
-		>made</Highlighter
-	>
-</h2>
-<Preview {...hmdObjMeta} />
-<Preview {...clrSldMeta} />
+<WorkSection posts={[hmdObjMeta]} />
 
-<h2 id="wrote-header">
-	things I <Highlighter color={COLORS.blue} text="wrote" markerWidth={24} lines={1} fontSize={32}>
-		wrote
-	</Highlighter>
-</h2>
+<BlogSection posts={[clrSldMeta]} />
 
 <style>
 	.intro {

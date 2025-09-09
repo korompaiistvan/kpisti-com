@@ -1,8 +1,9 @@
+<h1>Hi there!</h1>
 <p>
-	Hi there! I'm István Korompai, a data visualization engineer with 7 years of experience in turning
-	complex data into insightful and user-friendly visuals. My work revolves around creating
-	data-heavy web applications and business dashboards that not only follow the best practices of
-	data visualization but are also genuinely useful for end users.
+	I'm István Korompai, a data visualization engineer with 7 years of experience in turning complex
+	data into insightful and user-friendly visuals. My work revolves around creating data-heavy web
+	applications and business dashboards that not only follow the best practices of data visualization
+	but are also genuinely useful for end users.
 </p>
 
 <p>
@@ -21,3 +22,9 @@
 	I am passionate about my work and always ready to tackle new challenges with a no-nonsense
 	approach. Let’s create something amazing together.
 </p>
+
+<style>
+	p {
+		margin-block: var(--bg-grid-size);
+	}
+</style>

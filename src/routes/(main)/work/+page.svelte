@@ -1,1 +1,7 @@
-There be dragons here! This page is just a stub for now.
+<script>
+	import WorkSection from '$lib/components/WorkSection.svelte';
+
+	import hmdObjMeta from './handmade-data-object/meta';
+</script>
+
+<WorkSection posts={[hmdObjMeta]} />
