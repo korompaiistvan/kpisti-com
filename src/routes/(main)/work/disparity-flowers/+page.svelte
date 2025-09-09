@@ -15,7 +15,8 @@
 	<p class="collab">
 		Collaboration with <span class="author-name">Ivett Kovács</span>
 	</p>
-
+</Header>
+<Body>
 	<Image
 		src={disparityFlowers}
 		alt="A grid of flowers with 8 petals each, with petals doubled up to form 4 main directions. The design follows a poster format, without a clear overarching message, but the flowers all seem disproportionate, and somehow... sick."
@@ -25,8 +26,6 @@
 	>
 		Open on Tableau Public
 	</NavigationButton>
-</Header>
-<Body>
 	<p>
 		A submission for the actual Viz For Social Good challenge, this workshines a light on the gender
 		and ethnic imbalances of US tech companies' workforces, using flowers as the visual metaphor.

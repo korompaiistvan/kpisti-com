@@ -4,6 +4,7 @@
 
 	import clrSldMeta from '../blog/color-solids/meta';
 	import a11yMeta from '../blog/a11y-blog-posts/meta';
+	import ReadingWidthConstraint from '$lib/components/ReadingWidthConstraint.svelte';
 </script>
 
 <Meta
@@ -11,4 +12,6 @@
 	description="Various lengths of blog posts written by data vis engineer, István Korompai"
 />
 
-<BlogSection posts={[clrSldMeta, a11yMeta]} />
+<ReadingWidthConstraint>
+	<BlogSection posts={[clrSldMeta, a11yMeta]} />
+</ReadingWidthConstraint>

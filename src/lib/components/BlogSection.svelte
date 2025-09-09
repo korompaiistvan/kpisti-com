@@ -8,10 +8,6 @@
 	const { posts = [] }: { posts?: BlogMeta[] } = $props();
 </script>
 
-<Meta
-	title="Blog- István Korompai"
-	description="Shorter and longer blog posts written by a data vis engineer"
-/>
 <h2 id="wrote-header">
 	things I <Highlighter color={COLORS.blue} text="wrote" markerWidth={24} lines={1} fontSize={32}>
 		wrote

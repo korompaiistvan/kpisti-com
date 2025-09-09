@@ -5,7 +5,6 @@
 
 	import { page } from '$app/state';
 	import { afterNavigate } from '$app/navigation';
-	import { curveStepBefore } from 'd3-shape';
 
 	const isCurrent = (href: string) => {
 		return href === page.url.pathname ? 'page' : false;
@@ -61,7 +60,6 @@
 			{@render navlink('/work', 'Work', COLORS.teal)}
 			{@render navlink('/blog', 'Blog', COLORS.purple)}
 			{@render navlink('/about', 'About', COLORS.orange)}
-			{@render navlink('/contact', 'Contact', COLORS.blue)}
 		</div>
 		<button
 			type="button"
