@@ -121,7 +121,7 @@
 				vertexColors
 				opacity={0}
 				toneMapped={false}
-				in={fade(0, 600, 400)}
+				in={fade(0, 600, 0)}
 				out={fade(0, 600, 0)}
 				transparent
 			/>
@@ -134,8 +134,9 @@
 				size="5"
 				vertexColors
 				flatShading={true}
-				in={fade(0, 600, 400)}
+				in={fade(0, 600, 0)}
 				out={fade(0, 600, 0)}
+				side={2}
 				transparent
 			/>
 		</T.Mesh>
