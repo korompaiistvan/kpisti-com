@@ -1,5 +1,5 @@
 <script>
-	import { VISIBLE_RANGE_LENGTH, visibleSpectrumXYZ } from './utils/color';
+	import { VISIBLE_RANGE_LENGTH, visibleSpectrumXYZ } from '$lib/color-theory/color';
 	import { scaleLinear } from 'd3-scale';
 	import { line } from 'd3-shape';
 	let height = $state(0);

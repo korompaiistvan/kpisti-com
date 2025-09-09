@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatHex } from 'culori';
 	import SpdChart from './SPDChart.svelte';
-	import { convertXyz65ToLms, generateRandomSPD, XYZFromSPD } from './utils/color';
+	import { convertXyz65ToLms, generateRandomSPD, XYZFromSPD } from '$lib/color-theory/color';
 
 	const resolution = 30;
 	const maxBubbleSize = 48;

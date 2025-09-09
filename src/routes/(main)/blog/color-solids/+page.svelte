@@ -9,7 +9,7 @@
 	import meta from './meta';
 	import SpdToColor from './SPDToColor.svelte';
 	import Spectrum from './Spectrum.svelte';
-	import { VISIBLE_RANGE } from './utils/color';
+	import { VISIBLE_RANGE } from '$lib/color-theory/color';
 </script>
 
 <Header>

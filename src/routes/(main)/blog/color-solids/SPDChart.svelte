@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { scaleLinear } from 'd3-scale';
 	import { converter, formatHex } from 'culori';
-	import { type SPD, VISIBLE_RANGE_LENGTH, visibleSpectrumXYZ } from './utils/color';
+	import { type SPD, VISIBLE_RANGE_LENGTH, visibleSpectrumXYZ } from '$lib/color-theory/color';
 
 	const defaultSPD = new Uint8Array(VISIBLE_RANGE_LENGTH).fill(255);
 	const { spd = defaultSPD }: { spd?: SPD } = $props();

@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { getOptimalColorSolid, convertXyz65ToOklab, convertXyz65ToLms } from '../utils/color';
+	import {
+		getOptimalColorSolid,
+		convertXyz65ToOklab,
+		convertXyz65ToLms
+	} from '$lib/color-theory/color';
 	import { T, useThrelte, useTask } from '@threlte/core';
 	import { OrbitControls } from '@threlte/extras';
 	import * as THREE from 'three';
