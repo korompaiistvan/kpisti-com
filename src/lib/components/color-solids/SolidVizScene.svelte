@@ -10,7 +10,7 @@
 	import { OrbitControls, transitions } from '@threlte/extras';
 	import * as THREE from 'three';
 	import { Tween } from 'svelte/motion';
-	import { fade } from '../utils/fade';
+	import { fade } from '../../../routes/(main)/blog/color-solids/utils/fade';
 	import { backInOut } from 'svelte/easing';
 
 	const {

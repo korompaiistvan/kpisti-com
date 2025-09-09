@@ -10,6 +10,7 @@
 	import SpdToColor from './SPDToColor.svelte';
 	import Spectrum from './Spectrum.svelte';
 	import { VISIBLE_RANGE } from '$lib/color-theory/color';
+	import NavigationButton from '$lib/components/NavigationButton.svelte';
 </script>
 
 <Header>
@@ -107,24 +108,33 @@
 	<h2>Color Solid</h2>
 
 	<p>
-		Imagine doing the above exercise of color mixing thousands of times, with a different waveform
-		each time. You would get thousands of points in 3D Space, where each axis corresponds to the
-		activation levels of the different types of cone cells. It would look like the following:
+		Imagine doing the above exercise of color mixing thousands of times, with a different "spectral
+		distribution" each time. You would get thousands of points in 3D Space, where each axis
+		corresponds to the activation levels of the different types of cone cells. It would look like
+		the following:
 	</p>
 	<figure>
 		<SolidVizCanvas />
 		<figcaption>
-			The rough shape of the solid formed by all visible colors, in the so-called XYZ color space.
-			The colors in this space form an elongated "tear-based" cilinder due to the shape of the color
-			sensitivity curves of the different cone cells.
+			The rough shape of the solid formed by all visible colors, in the LMS color space. The
+			individual colors form a solid with two parellel sides that are elongated tear shapes. The
+			other sides are roughly straight between the parallel "end plates".
 		</figcaption>
 	</figure>
 
 	<p>
-		This XYZ color space forms the basis of a lot of computational color theory. This blog post will
-		be extended with further explanations of the other perceptual color spaces and transformations
-		between them.
+		Using the cone cell activation to plot colors yields us the LMS color spaces - named so because
+		it represents the activations of <strong>L</strong>ong, <strong>M</strong>edium and
+		<strong>S</strong>hort wavelength-sensitive cone cells. Its sibling space, XYZ was born to
+		simplify color computations - this is all happening in the 1930s, so calculations are done by
+		hand - and is used by a lot of color computation software internally.
 	</p>
+
+	<p>
+		While this blog post is cut short here, I invite you to check out the explorer I made that
+		allows you to morph these solids into one-another.
+	</p>
+	<NavigationButton href="/work/color-solid-explorer">Go to Explorer</NavigationButton>
 </Body>
 
 <style>

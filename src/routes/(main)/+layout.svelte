@@ -29,7 +29,7 @@
 
 <GlobalStyles>
 	<div class="wrapper">
-		<div class="container">
+		<div class="inner-wrapper">
 			<Header onHighlightSeedUpdate={updateHighlightSeed} />
 			<main>
 				{@render children?.()}
@@ -55,18 +55,24 @@
 
 	.wrapper {
 		color: #033a7d;
+		min-height: 100dvh;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.inner-wrapper {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+
 		background-image: url('/background-img');
 		background-size: calc(var(--bg-grid-size) * 4) calc(var(--bg-grid-size) * 4);
 		padding: calc(var(--bg-grid-size) * 0.5);
+
 		@media (min-width: 768px) {
 			margin: 2rem;
 		}
-		min-height: 100dvh;
-	}
-
-	.container {
-		display: flex;
-		flex-direction: column;
 	}
 
 	main {

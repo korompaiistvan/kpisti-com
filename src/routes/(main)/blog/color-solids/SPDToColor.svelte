@@ -67,6 +67,7 @@
 		align-items: center;
 		gap: 0.5rem;
 		grid-area: center;
+		margin-bottom: var(--bg-grid-size);
 	}
 
 	.sliders {
