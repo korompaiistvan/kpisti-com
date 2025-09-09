@@ -7,24 +7,25 @@
 		type MorphableColorSpace
 	} from '$lib/color-theory/solid-geometry';
 	import { T, useThrelte, useTask } from '@threlte/core';
-	import { OrbitControls } from '@threlte/extras';
+	import { OrbitControls, transitions } from '@threlte/extras';
 	import * as THREE from 'three';
-	import { Color } from 'three';
-	import { Spring } from 'svelte/motion';
+	import { Tween } from 'svelte/motion';
+	import { fade } from '../utils/fade';
+	import { backInOut } from 'svelte/easing';
 
 	const {
 		solidOrPoints = 'points',
 		colorSpace = 'lab',
 		gamut = 'visible-colors'
 	}: {
-		solidOrPoints?: 'solid' | 'points' | 'both' | 'neither';
+		solidOrPoints?: 'solid' | 'points';
 		colorSpace?: (typeof colorSpaces)[number];
 		gamut?: 'visible-colors' | 'srgb';
 	} = $props();
 
 	const hullGeometry = getHullGeometry();
 
-	const morphInfluences = new Spring<Record<MorphableColorSpace | `${ColorSpace}Clamped`, number>>(
+	const morphInfluences = new Tween<Record<MorphableColorSpace | `${ColorSpace}Clamped`, number>>(
 		{
 			lab: 0,
 			oklab: 0,
@@ -38,7 +39,7 @@
 			srgbClamped: 0,
 			xyzClamped: 0
 		},
-		{ stiffness: 0.1, damping: 1 }
+		{ duration: 600, easing: backInOut }
 	);
 
 	$effect(() => {
@@ -66,13 +67,12 @@
 	]);
 
 	const { scene } = useThrelte();
-
+	transitions();
 	$effect(() => {
-		scene.background = new Color().setHex(0xc2cdde);
+		scene.background = new THREE.Color().setHex(0xc2cdde);
 	});
 
 	let rotation = $state(0);
-
 	useTask((delta) => {
 		rotation += delta / 4;
 	});
@@ -114,22 +114,32 @@
 />
 
 <T.Group position.y={10}>
-	<T.Points
-		castShadow
-		geometry={hullGeometry}
-		{morphTargetInfluences}
-		visible={solidOrPoints === 'points' || solidOrPoints === 'both'}
-	>
-		<T.PointsMaterial size={5} vertexColors opacity={0} toneMapped={false} />
-	</T.Points>
-	<T.Mesh
-		castShadow
-		geometry={hullGeometry}
-		{morphTargetInfluences}
-		visible={solidOrPoints === 'solid' || solidOrPoints === 'both'}
-	>
-		<T.MeshPhongMaterial size="5" vertexColors flatShading={true} side={2} />
-	</T.Mesh>
+	{#if solidOrPoints === 'points'}
+		<T.Points castShadow geometry={hullGeometry} {morphTargetInfluences}>
+			<T.PointsMaterial
+				size={5}
+				vertexColors
+				opacity={0}
+				toneMapped={false}
+				in={fade(0, 600, 400)}
+				out={fade(0, 600, 0)}
+				transparent
+			/>
+		</T.Points>
+	{/if}
+
+	{#if solidOrPoints === 'solid'}
+		<T.Mesh castShadow geometry={hullGeometry} {morphTargetInfluences}>
+			<T.MeshPhongMaterial
+				size="5"
+				vertexColors
+				flatShading={true}
+				in={fade(0, 600, 400)}
+				out={fade(0, 600, 0)}
+				transparent
+			/>
+		</T.Mesh>
+	{/if}
 </T.Group>
 <T.Mesh receiveShadow rotation.x={-Math.PI / 2}>
 	<T.CircleGeometry args={[300, 72]} />
