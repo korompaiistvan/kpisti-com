@@ -24,7 +24,7 @@
 			<option value="xyz">XYZ</option>
 			<option value="lab">LAB</option>
 			<option value="oklab">okLAB</option>
-			<option value="lrgb">lRGB</option>
+			<option value="lrgb">LRGB</option>
 			<option value="srgb">sRGB</option>
 		</select>
 	</div>
