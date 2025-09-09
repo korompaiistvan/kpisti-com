@@ -4,6 +4,7 @@
 	import Meta from '$lib/components/Meta.svelte';
 
 	import hmdObjMeta from './work/handmade-data-object/meta';
+	import baliPostCardMeta from './work/bali-postcard/meta';
 	import clrSldMeta from './blog/color-solids/meta';
 	import a11yMeta from './blog/a11y-blog-posts/meta';
 	import WorkSection from '$lib/components/WorkSection.svelte';
@@ -32,7 +33,7 @@
 	</p>
 </div>
 
-<WorkSection posts={[hmdObjMeta]} />
+<WorkSection posts={[hmdObjMeta, baliPostCardMeta]} />
 
 <BlogSection posts={[clrSldMeta, a11yMeta]} />
 
